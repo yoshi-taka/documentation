@@ -67,6 +67,31 @@ The Datadog Profiler requires [Java Flight Recorder][1]. The Datadog Profiling l
 [4]: /account_management/api-app-keys/#api-keys
 {{% /tab %}}
 
+
+{{% tab "Node" %}}
+
+The Datadog Profiler requires Node 10.5+. To begin profiling applications:
+
+1. Install `ddtrace` with the `profile` flavor, which contains both tracing and profiling:
+
+    ```shell
+    npm install --save @datadog/profiler
+    ```
+
+2. Add a valid [Datadog API key][1] in your environment variable: `DD_API_KEY`.
+
+3. To automatically profile your code, import `@datadog/profiler` and start the profiler:
+
+    ```javascript
+    require('@datadog/profiler').start()
+    ```
+
+4. After a minute or two, visualize your profiles on the [Datadog APM > Profiling page][2].
+
+For advanced setup of the profiler, see the project [repository][6].
+
+{{% /tab %}}
+
 {{% tab "Python" %}}
 
 The Datadog Profiler requires Python 2.7+. Memory profiling only works on Python 3.5+. To begin profiling applications:
@@ -266,6 +291,17 @@ Once enabled, the following profile types are collected:
 
 {{% /tab %}}
 
+{{% tab "Node" %}}
+
+Once enabled, the following profile types are collected:
+
+| Profile type | Definition |
+| ------------ | ---------- |
+| Allocation   | Shows the amount of heap memory allocated by each function, including allocations which were subsequently freed. |
+| Wall         | Shows the elapsed time used by each function. Elapsed time includes time when code is running on CPU, waiting for I/O, and anything else that happens while the function is running. |
+
+{{% /tab %}}
+
 {{% tab "Python" %}}
 
 Once enabled, the following profile types are collected:
@@ -312,3 +348,4 @@ In case you have done all the necessary configuration steps and do not see profi
 [3]: /tracing/visualization/#services
 [4]: /tracing/troubleshooting/#tracer-debug-mode
 [5]: /help/
+[6]: https://github.com/DataDog/dd-profile-js
