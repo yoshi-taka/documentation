@@ -72,7 +72,7 @@ The Datadog Profiler requires [Java Flight Recorder][1]. The Datadog Profiling l
 
 The Datadog Profiler requires Node 10.5+. To begin profiling applications:
 
-1. Install `ddtrace` with the `profile` flavor, which contains both tracing and profiling:
+1. Install the profiler:
 
     ```shell
     npm install --save @datadog/profiler
@@ -88,8 +88,11 @@ The Datadog Profiler requires Node 10.5+. To begin profiling applications:
 
 4. After a minute or two, visualize your profiles on the [Datadog APM > Profiling page][2].
 
-For advanced setup of the profiler, see the project [repository][6].
+For advanced setup of the profiler, see the project [repository][3].
 
+[1]: /account_management/api-app-keys/#api-keys
+[2]: https://app.datadoghq.com/profiling
+[3]: https://github.com/DataDog/dd-profile-js
 {{% /tab %}}
 
 {{% tab "Python" %}}
@@ -348,4 +351,3 @@ In case you have done all the necessary configuration steps and do not see profi
 [3]: /tracing/visualization/#services
 [4]: /tracing/troubleshooting/#tracer-debug-mode
 [5]: /help/
-[6]: https://github.com/DataDog/dd-profile-js
