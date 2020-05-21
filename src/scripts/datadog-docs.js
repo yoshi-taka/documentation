@@ -578,19 +578,6 @@ $(document).ready(function () {
         $('.sidenav-search input[name="s"]').val(searchParam);
     }
 
-    if (!document.body.classList.contains('api')){
-        $(window).on('resize scroll', function(e) {
-            const header_h = $('body > header').height();
-            const footer_h = $('body > footer').height();
-            const padding = 200;
-            $('.sidenav-nav').css(
-                'maxHeight',
-                document.documentElement.clientHeight - header_h - padding
-            );
-        });
-    }
-    
-
     updateMainContentAnchors();
 
 

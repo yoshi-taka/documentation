@@ -112,7 +112,6 @@ body > header.scrolled ~ .container .sidenav .sticky {
   .sidenav-nav {
     margin-left:7px;
     overflow-x: hidden;
-    overflow-y: auto;
     ul {
       margin-top:0px;
       padding-bottom:3px;
@@ -237,7 +236,6 @@ body > header.scrolled ~ .container .sidenav .sticky {
 .sidenav-api {
   .sidenav-nav {
     overflow-x: hidden;
-    overflow-y: scroll;
     margin:0;
     ul li.active{
       > a {
