@@ -89,7 +89,7 @@ Now that you've configured your application to send traces to Datadog, start get
 
 ### Continuous Profiling
 
-[Improve code efficiency][8] with always on production profiling to pinpoint the lines of code consuming the most CPU, memory, or I/O.
+[Optimize performance and reduce costs][8] with continuous production profiling that measures application's CPU, memory, and I/O usage with very low performance overhead.
 
 {{< img src="tracing/index/Profiling.png" alt="Profiling"  style="width:100%;">}}
 
