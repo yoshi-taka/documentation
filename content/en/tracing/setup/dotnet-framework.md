@@ -35,7 +35,7 @@ Otherwise, to begin tracing applications written in any language, first [install
 
 ## Automatic Instrumentation
 
-Automatic instrumentation can collect performance data about your application with zero code changes and minimal configuration. The .NET Tracer automatically instruments all [supported libraries](#integrations) out of the box.
+Automatic instrumentation can collect performance data about your application with zero code changes and minimal configuration. The .NET Tracer automatically instruments all [supported libraries][7] out of the box.
 
 Automatic instrumentation captures:
 
@@ -54,8 +54,6 @@ After installing the .NET Tracer, restart applications so they can read the new 
 net stop /y was
 net start w3svc
 ```
-
-### Required Environment Variables
 
 If your application runs in IIS, skip the rest of this section.
 
@@ -80,14 +78,6 @@ example.exe
 To set environment variables for a Windows Service, use the multi-string key `HKLM\System\CurrentControlSet\Services\{service name}\Environment` in the Windows Registry.
 
 **Note:** The .NET runtime tries to load a profiler into _any_ .NET process that is started with these environment variables are set. You should limit instrumentation only to the applications that need to be traced. **We do not recommend setting these environment variables globally as this causes _all_ .NET processes on the host to load the profiler.**
-
-## Manual Instrumentation
-
-To manually instrument your code, add the `Datadog.Trace` [NuGet package][4] to your application. In your code, access the global tracer through the `Datadog.Trace.Tracer.Instance` property to create new spans.
-
-For more details on manual instrumentation and custom tagging, see [Manual instrumentation documentation][5].
-
-Manual instrumentation is supported on .NET Framework 4.5 and above on Windows and on .NET Core 2.1, 3.0, and 3.1 on Windows and Linux.
 
 ## Configuration
 
@@ -237,3 +227,4 @@ The following table lists configuration variables that are available only when u
 [4]: https://www.nuget.org/packages/Datadog.Trace
 [5]: /tracing/manual_instrumentation/dotnet/
 [6]: /tracing/guide/setting_primary_tags_to_scope/#environment
+[7]: /tracing/compatibility_requirements/dotnet-framework/
