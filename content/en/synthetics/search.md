@@ -1,7 +1,7 @@
 ---
-title: Synthetics Search
+title: Synthetic Monitoring Search
 kind: documentation
-description: Search your Synthetics tests.
+description: Search your Synthetic tests.
 ---
 
 ## Search

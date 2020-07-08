@@ -1,5 +1,5 @@
 ---
-title: Clone your Synthetics tests
+title: Clone your Synthetic tests
 kind: faq
 further_reading:
 - link: "/synthetics/"
@@ -10,7 +10,7 @@ further_reading:
   text: "Manage your checks"
 ---
 
-You can clone your Synthetics tests using our API:
+You can clone your Synthetic tests using our API:
 
 1. Retrieve your test configuration using the [Get a test][1] endpoint.
 2. Perform modifications if needed (URL, tags, etc.).

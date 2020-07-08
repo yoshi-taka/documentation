@@ -1,7 +1,7 @@
 ---
-title: Run Synthetics Tests from Private Locations
+title: Run Synthetic Tests from Private Locations
 kind: documentation
-description: Run Synthetics API and browser tests from private locations
+description: Run Synthetic API and browser tests from private locations
 further_reading:
     - link: /getting_started/synthetics/private_location
       tag: 'Documentation'
@@ -22,8 +22,8 @@ Reach out to the <a href="https://docs.datadoghq.com/help/">Datadog support team
 
 Private locations allow you to **monitor internal-facing applications or any private URLs** that aren’t accessible from the public internet. They can also be used to:
 
-* **Create new custom Synthetics locations** in areas that are mission-critical to your business.
-* **Verify application performance in your internal CI environment** before you release new features to production with [Synthetics CI integration][1].
+* **Create new custom Synthetic Monitoring locations** in areas that are mission-critical to your business.
+* **Verify application performance in your internal CI environment** before you release new features to production with [Synthetic Monitoring CI integration][1].
 * **Compare application performance** from both inside & outside your internal network.
 
 Private locations come as Docker containers that you can install wherever makes sense inside of your private network. Once created and installed, you can assign [Synthetic tests][2] to your private location just like you would with any regular managed location.
@@ -72,9 +72,9 @@ To pull test configurations and push test results, the private location worker n
 
 ### Create your private location
 
-Go in _Synthetics_ -> _Settings_ -> _Private Locations_ and click **Add Private Location**:
+Go in _UX Monitoring_ -> _Settings_ -> _Private Locations_ and click **Add Private Location**:
 
-{{< img src="synthetics/private_locations/add_pl.png" alt="create a private locations"  style="width:100%;">}}
+{{< img src="synthetics/private_locations/add_pl.png" alt="Create a private locations"  style="width:100%;">}}
 
 **Note**: Only **Admin** users can create private locations.
 
