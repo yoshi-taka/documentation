@@ -31,7 +31,7 @@ if (env === 'preview' || env === 'live') {
         clientToken: ddClientToken,
         env,
         service: 'docs',
-        version: ''
+        version: `${__webpack_hash__}` // eslint-disable-line camelcase
     });
 }
 

@@ -132,6 +132,6 @@
         "DD": false,
         // Third party globals
         "$": false,
-        "CI_COMMIT_SHORT_SHA": false
+        "__webpack_hash__": false
     }
 }

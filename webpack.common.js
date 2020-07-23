@@ -19,9 +19,7 @@ const commonConfig = env => {
             sortManifest: true,
             publicPath: 'static/'
         }),
-        new webpack.DefinePlugin({
-            CI_COMMIT_SHORT_SHA: JSON.stringify(process.env.CI_COMMIT_SHORT_SHA || '00000000')
-        })
+        new webpack.ExtendedAPIPlugin()
     ];
 
     // check if the analyze script was run and add BundleAnalyzer plugin if true
