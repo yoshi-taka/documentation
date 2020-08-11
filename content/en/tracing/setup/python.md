@@ -70,6 +70,7 @@ It is recommended to use `DD_ENV`, `DD_SERVICE`, and `DD_VERSION` to set `env`, 
 | `DD_LOGS_INJECTION`                | `false`     | Enable [connecting logs and trace injection][11].                                                                                                                                                                                                                           |
 | `DD_TRACE_ANALYTICS_ENABLED`       | `false`     | Enable App Analytics globally for [web integrations][12].                                                                                                                                                                                                                   |
 | `DD_INTEGRATION_ANALYTICS_ENABLED` | `false`     | Enable App Analytics for a specific integration. Example: `DD_BOTO_ANALYTICS_ENABLED=true` .                                                                                                                                                                                |
+| `DD_STARTUP_LOGS`                  | `true`      | Enable start up diagnostic logging.                                                                                                                                                                                  |
 
 ## Change Agent Hostname
 
