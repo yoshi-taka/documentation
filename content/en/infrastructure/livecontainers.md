@@ -55,7 +55,7 @@ datadog:
         pullPolicy: Always
    ...
    clusterAgent:
-	    repository: datadog/cluster-agent
+      repository: datadog/cluster-agent
       tag: latest
       pullPolicy: Always
    ...
@@ -102,7 +102,7 @@ Navigate to the [Containers page][1]. This will automatically bring you to the *
 
 ## Searching, Filtering, and Pivoting
 
-### String Search
+### String search
 
 Containers are, by their nature, extremely high cardinality objects. Datadog's flexible string search matches substrings in the container name, ID, or image fields.
 
@@ -119,7 +119,7 @@ To combine multiple string searches into a complex query, you can use any of the
 
 Use parentheses to group operators together. For example, `(NOT (elasticsearch OR kafka) java) OR python`.
 
-### Filtering and Pivoting
+### Filtering and pivoting
 
 The screenshot below displays a system that has been filtered down to a Kubernetes cluster of nine nodes. RSS and CPU utilization on containers is reported compared to the provisioned limits on the containers, when they exist. Here, it is apparent that the containers in this cluster are over-provisioned. You could use tighter limits and bin packing to achieve better utilization of resources.
 
@@ -164,11 +164,11 @@ Having these tags available will let you tie together APM, logs, metrics, and li
 
 ## Views
 
-### Containers View
+### Containers view
 
 The **Containers** view includes [Scatter Plot](#scatter-plots) and [Timeseries][13] views, and a table to better organize your container data by fields such as container name, status, and start time.
 
-#### Scatter Plot
+#### Scatter plot
 
 Use the scatter plot analytic to compare two metrics with one another in order to better understand the performance of your containers.
 
@@ -190,7 +190,7 @@ The query at the top of the scatter plot analytic allows you to control your sca
 
 While actively working with the containers page, metrics are collected at a 2-second resolution. This is important for highly volatile metrics such as CPU. In the background, for historical context, metrics are collected at 10s resolution.
 
-### Kubernetes Resources Views
+### Kubernetes Resources views
 
 If you have enabled Kubernetes Resources for Live Containers, toggle between the **Pods**, **Deployments**, **ReplicaSets**, and **Services** views in the **View** dropdown menu in the top left corner of the page. Each of these views includes a data table to help you better organize your data by field such as status, name, and Kubernetes labels, and a detailed Cluster Map to give you a bigger picture of your pods and Kubernetes clusters.
 
@@ -200,7 +200,7 @@ A Kubernetes Cluster Map gives you a bigger picture of your pods and Kubernetes 
 
 Drill down into resources from Cluster Maps by click on any circle or group to populate a detailed panel.
 
-#### Details Panel
+#### Details panel
 
 Click on any row in the table or on any object in a Cluster Map to view information about a specific container or resource. A new side panel is opened with several tabs to help you troubleshoot and find information about your selected resource:
 
@@ -214,7 +214,7 @@ Click on any row in the table or on any object in a Cluster Map to view informat
 
 For a detailed dashboard of this resource, click the View Pods Dashboard in the top right corner of this panel.
 
-### Container Logs
+### Container logs
 
 View streaming logs for any container like `docker logs -f` or `kubectl logs -f` in Datadog. Click any container in the table to inspect it. Click the *Logs* tab to see real-time data from [Live Tail][18] or indexed logs for any time in the past.
 
