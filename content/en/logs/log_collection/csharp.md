@@ -22,6 +22,8 @@ further_reading:
 - link: "/logs/faq/log-collection-troubleshooting-guide/"
   tag: "FAQ"
   text: "Log Collection Troubleshooting Guide"
+headless: true
+code_lang: csharp
 ---
 
 To send your C# logs to Datadog, we recommend logging to a file and then tailing that file with your Datadog Agent. Here are setup examples for the `Serilog`, `NLog`, and `log4net` logging libraries

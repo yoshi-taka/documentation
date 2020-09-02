@@ -1,6 +1,7 @@
 import 'bootstrap';
 
 import './datadog-docs';
+import './components/code-languages'
 
 import './components/announcement_banner';
 import './components/copy-code';

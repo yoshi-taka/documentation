@@ -6,6 +6,8 @@ further_reading:
     - link: 'tracing/setup/cpp'
       tag: 'Documentation'
       text: 'Instrument Your Application'
+code_lang: cpp
+type: multi-code-lang
 ---
 
 ## Compatibility

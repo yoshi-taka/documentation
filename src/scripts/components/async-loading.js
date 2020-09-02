@@ -6,6 +6,7 @@ import { initializeIntegrations } from './integrations';
 import { initializeSecurityRules } from './security-rules';
 import {updateMainContentAnchors, reloadWistiaVidScripts, gtag } from '../helpers/helpers';
 import configDocs from '../config/config-docs';
+import {codeNavActivate, addCodeLinkEventListeners, redirectToCodeLang} from './code-languages';
 
 const { env } = document.documentElement.dataset;
 const { gaTag } = configDocs[env];
@@ -104,6 +105,18 @@ function loadPage(newUrl) {
             document.documentElement.dataset.relpermalink =
                 newDocument.documentElement.dataset.relpermalink;
 
+            // update data-type
+            document.documentElement.dataset.type =
+                newDocument.documentElement.dataset.type;
+
+            // update data-code-lang
+            document.documentElement.dataset.codeLang =
+            newDocument.documentElement.dataset.codeLang;
+
+            // update data-current-section
+            document.documentElement.dataset.currentSection =
+            newDocument.documentElement.dataset.currentSection;
+
             // check if loaded page has inline JS. if so, we want to return as script will not execute
             const hasScript = newContent.getElementsByTagName('script').length;
 
@@ -128,6 +141,24 @@ function loadPage(newUrl) {
             }
 
             initializeSecurityRules();
+
+            addCodeLinkEventListeners();
+    
+            const pageCodeLang = document.documentElement.dataset.codeLang;
+
+            console.log('pageCodeLang: ', pageCodeLang)
+            codeNavActivate(pageCodeLang);
+
+            // redirectToCodeLang(document.querySelector('.js-code-lang-selector').value)
+            
+            
+
+            // document.querySelectorAll('.js-code-example-link').forEach((link) => {
+            //     link.addEventListener('click', function (event){
+            //         event.preventDefault();
+            //         loadPage(event.target.href);
+            //     })
+            // })
 
             // if newly requested TOC is NOT disabled
             if (newTOC.querySelector('#TableOfContents')) {
@@ -157,6 +188,8 @@ function loadPage(newUrl) {
             if (regionSelector) {
                 redirectToRegion(regionSelector.value);
             }
+
+            
 
             // Gtag virtual pageview
             gtag('config', gaTag, { page_path: pathName });

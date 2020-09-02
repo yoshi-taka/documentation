@@ -6,6 +6,8 @@ further_reading:
     - link: 'tracing/setup/java'
       tag: 'Documentation'
       text: 'Instrument Your Application'
+code_lang: java
+type: multi-code-lang
 ---
 
 ## Compatibility

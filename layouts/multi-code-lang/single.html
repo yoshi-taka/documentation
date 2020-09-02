@@ -1,0 +1,55 @@
+{{ define "pre-main" }}
+    
+{{ end }}
+
+
+
+{{ define "code-lang" }}
+    <div class="code-lang-selector-container">
+        <select class="js-code-lang-selector d-none" placeholder="Site">
+        <option value="" disabled>Code Language</option>
+        {{ range .CurrentSection.Pages }}   
+            <option value="{{ .Params.code_lang }}">{{ .Params.code_lang }}</option>
+        {{ end }}
+        </select>
+    </div>
+{{ end }}
+
+{{ define "main" }}
+
+   
+
+    {{ $codeLangs := slice }}
+    {{ range .CurrentSection.Pages }} 
+        {{ with .Params.code_lang }}  
+        {{ $codeLangs = $codeLangs | append .  }}
+        {{ end }}
+    {{ end }}
+
+
+    {{ partial "code-lang-tabs" (dict "context" . "codeLangs" $codeLangs ) }}
+
+    
+
+    <h1 id="pagetitle">{{ .Title }}</h1>
+    {{ partial "translate_status_banner/translate_status_banner.html" . }}
+
+    {{/* $headless := site.GetPage "/tracing/compatibility_requirements" */}}
+
+    
+    {{/* $reusablePages := $headless.Resources.Match "*" */}}
+
+    <!-- Get all page bungles, loop through each, specify html target data-code-java for JS targeting use -->
+
+    
+
+    
+
+    <div data-code-lang="{{ .Params.code_lang }}">
+            
+        {{ .Content }}
+    </div>
+
+
+    
+{{ end }}

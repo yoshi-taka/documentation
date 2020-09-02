@@ -8,6 +8,8 @@ further_reading:
     - link: 'tracing/setup/ruby'
       tag: 'Documentation'
       text: 'Instrument Your Application'
+code_lang: ruby
+type: multi-code-lang
 ---
 
 ## Compatibility

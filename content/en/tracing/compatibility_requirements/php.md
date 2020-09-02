@@ -6,6 +6,8 @@ further_reading:
     - link: 'tracing/setup/php'
       tag: 'Documentation'
       text: 'Instrument Your Application'
+code_lang: php
+type: multi-code-lang
 ---
 ## Compatibility
 

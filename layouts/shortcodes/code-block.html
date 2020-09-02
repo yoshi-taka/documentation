@@ -9,7 +9,7 @@
 {{ end }}
 
 {{/*  This html should not be formatted differently as it will cause issues when used inside of another shortcode (like tabs)  */}}
-<div class="code-snippet-wrapper">
+<div class="code-snippet-wrapper" data-code-lang-snippet="{{ $lang }}">
 {{ if $filename }}
 <div class="code-filename-wrapper">
 <p class="code-filename my-0">{{ $filename }}</p>

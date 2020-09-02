@@ -47,7 +47,15 @@
                                     <option value="{{ .value }}">{{ .name }}</option>
                                 {{ end }}
                               </select>
+                              <select class="js-code-lang-selector d-none" placeholder="Site">
+                                <option value="" disabled>Code Language</option>
+                                {{ range $key, $value := .Site.Params.code_languages }}
+                                    <option value="{{ $value.name }}">{{ $value.name }}</option>
+                                {{ end }}
+                              </select>
                         </div>
+
+                       
                         
                     </div>
 

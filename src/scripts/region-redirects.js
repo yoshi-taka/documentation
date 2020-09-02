@@ -91,6 +91,7 @@ function showRegionSnippet(newSiteRegion) {
 
 // have option to pass new site region to function.
 function redirectToRegion(region = '') {
+    console.log('redirectToRegion called')
     const regionSelector = document.querySelector('.js-region-selector');
 
     const queryParams = new URLSearchParams(window.location.search);

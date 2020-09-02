@@ -6,6 +6,8 @@ further_reading:
     - link: 'tracing/setup/python'
       tag: 'Documentation'
       text: 'Instrument Your Application'
+code_lang: python
+type: multi-code-lang
 ---
 
 The Python Datadog Trace library is open source - view the [Github repository][1] for more information.

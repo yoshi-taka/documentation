@@ -6,6 +6,8 @@ further_reading:
     - link: 'tracing/setup/go'
       tag: 'Documentation'
       text: 'Instrument Your Application'
+code_lang: go
+type: multi-code-lang
 ---
 
 ## Compatibility

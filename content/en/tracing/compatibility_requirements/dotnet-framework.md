@@ -6,6 +6,8 @@ further_reading:
     - link: 'tracing/setup/dotnet-framework'
       tag: 'Documentation'
       text: 'Instrument Your Application'
+code_lang: dotnet-framework
+type: multi-code-lang
 ---
 
 The .NET Datadog Trace library is open source - view the [Github repository][1] for more information.

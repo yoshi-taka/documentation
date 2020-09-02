@@ -66,6 +66,7 @@ if (versionSelect) {
 }
 if (regionSelect) {
     const regionChoices = new Choices(regionSelect, regionChoiceOptions);
+    console.log('regionChoices: ', regionChoices)
 }
 
 // Setup for large screen ToC
