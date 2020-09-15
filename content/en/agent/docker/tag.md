@@ -54,7 +54,7 @@ docker_labels_as_tags:
   <LABEL_NAME>: <TAG_KEY>
 ```
 
-For example, you could set up:
+For example, you could set up: test
 
 ```yaml
 docker_labels_as_tags:
