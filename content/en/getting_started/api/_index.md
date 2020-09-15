@@ -19,7 +19,7 @@ You have:
 
 - An active Datadog implementation.
 - Access to your Datadog [API and application keys][2].
-- The [Postman API client installed][1].
+- The [Postman API client v7.32 or later][1] installed.
 - Basic knowledge of API structure and JSON formatting.
 
 ## Setup
@@ -28,13 +28,16 @@ You have:
 
 After the prerequisites are met:
 
-1. Download the [Datadog Postman collection][3] (pre-configured API call templates).
+1. Download the [Datadog Postman V1 collection][3] or the [Datadog Postman V2 collection][3] (pre-configured API call templates). For more information about whether you need version 1 or version 2 of the API, check out our [API Reference][4].
    In Postman, a collection is a folder of organized API calls for easy editing, saving, and re-use.
 
 2. Import the Datadog Postman Collection:
-    - Open Postman
-    - Click on **Import**
-    - Select the [datadog_collection.json][3] file downloaded in step 1.
+    - Open Postman.
+    - Click on **Import**.
+    - Upload the collection file downloaded in step 1.
+    - On the Confirm your import screen, scroll down under advanced options and in the **Folder organization** section, make sure **Tags** is selected.
+    - Click **Import**
+
 
 You now have a Datadog collection with many different API examples.
 
@@ -47,7 +50,7 @@ In the folders, the API calls have variables entered for `datadog_site`, `datado
 
 {{< img src="getting_started/postman/SetAPIKeys.png" alt="postman_api_template_variables"  style="width:70%;">}}
 
-This allows you to set up [Postman environments][4] and save your Datadog site, API, and application keys for authentication. If you have multiple Datadog organizations, set up multiple [Postman environments][4] to make API calls to different organizations without modifying the API calls in the Datadog Postman collection.
+This allows you to set up [Postman environments][5] and save your Datadog site, API, and application keys for authentication. If you have multiple Datadog organizations, set up multiple [Postman environments][5] to make API calls to different organizations without modifying the API calls in the Datadog Postman collection.
 
 Follow these steps to set up your environment:
 
@@ -65,7 +68,7 @@ Follow these steps to set up your environment:
 
 ## Working with the Collection
 
-After setup is complete, you are ready to begin making API calls. In the Postman -> Datadog folder, there are subfolders for each type of API category listed in the [Datadog API Reference][5]. Expand the subfolders to see the HTTP methods and API call names.
+After setup is complete, you are ready to begin making API calls. In the Postman -> Datadog folder, there are subfolders for each type of API category listed in the [Datadog API Reference][6]. Expand the subfolders to see the HTTP methods and API call names.
 
 **Note**: Don't forget to set your defined Environment in the upper right corner of Postman interface:
 
@@ -85,7 +88,7 @@ When you click on the Endpoint name a description of the endpoint and all requir
 
 ### Params
 
-The **Params** tab shows all parameters and values that are currently on the API call. Here, you are able to add parameters and values. View the available arguments in the corresponding section of the [Datadog API documentation][6].
+The **Params** tab shows all parameters and values that are currently on the API call. Here, you are able to add parameters and values. View the available arguments in the corresponding section of the [Datadog API documentation][4].
 
 {{< img src="getting_started/postman/parameters.png" alt="postman_param"  style="width:70%;">}}
 
@@ -98,7 +101,7 @@ This tab is an alternative to viewing the `param1:value1&param2:value2` structur
 
 [1]: https://www.postman.com/
 [2]: https://app.datadoghq.com/account/settings#api
-[3]: /resources/json/datadog_collection.json
-[4]: https://learning.postman.com/docs/postman/variables-and-environments/variables/#environments-in-postman
-[5]: /api/v1/organizations/
-[6]: /api/
+[3]: /resources/json/full_spec_v2.json
+[4]: /api/
+[5]: https://learning.postman.com/docs/postman/variables-and-environments/variables/#environments-in-postman
+[6]: /api/v1/organizations/
