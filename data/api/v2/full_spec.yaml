@@ -90,6 +90,14 @@ components:
         enum:
         - users
         type: string
+    ServiceSearchQueryParameter:
+      description: A search query to be used to filter services by name.
+      in: query
+      name: filter
+      required: false
+      schema:
+        example: ExampleServiceName
+        type: string
     TeamIDPathParameter:
       description: The ID of the team.
       in: path
@@ -106,6 +114,14 @@ components:
       schema:
         enum:
         - users
+        type: string
+    TeamSearchQueryParameter:
+      description: A search query to be used to filter teams by name.
+      in: query
+      name: filter
+      required: false
+      schema:
+        example: ExampleTeamName
         type: string
     UserID:
       description: The ID of the user.
@@ -4539,6 +4555,7 @@ paths:
       - $ref: '#/components/parameters/ServiceIncludeQueryParameter'
       - $ref: '#/components/parameters/PageSize'
       - $ref: '#/components/parameters/PageOffset'
+      - $ref: '#/components/parameters/ServiceSearchQueryParameter'
       responses:
         '200':
           content:
@@ -4689,6 +4706,7 @@ paths:
       - $ref: '#/components/parameters/TeamIncludeQueryParameter'
       - $ref: '#/components/parameters/PageSize'
       - $ref: '#/components/parameters/PageOffset'
+      - $ref: '#/components/parameters/TeamSearchQueryParameter'
       responses:
         '200':
           content:
@@ -5284,7 +5302,7 @@ tags:
   name: Service Dependencies
 - description: '[See API version 1](/api/v1/service-level-objectives/).'
   name: Service Level Objectives
-- description: Create, update, delete and retrieve your organizations services.
+- description: Create, update, delete and retrieve your organization's services.
   name: Services
 - description: '[See API version 1](/api/v1/slack-integration/).'
   name: Slack Integration
@@ -5294,7 +5312,7 @@ tags:
   name: Synthetics
 - description: '[See API version 1](/api/v1/tags/).'
   name: Tags
-- description: Create, update, delete and retrieve your organizations Teams.
+- description: Create, update, delete and retrieve your organization's Teams.
   name: Teams
 - description: '[See API version 1](/api/v1/timeboards/).'
   name: Timeboards

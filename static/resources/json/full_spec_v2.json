@@ -113,6 +113,16 @@
           "type": "string"
         }
       },
+      "ServiceSearchQueryParameter": {
+        "description": "A search query to be used to filter services by name.",
+        "in": "query",
+        "name": "filter",
+        "required": false,
+        "schema": {
+          "example": "ExampleServiceName",
+          "type": "string"
+        }
+      },
       "TeamIDPathParameter": {
         "description": "The ID of the team.",
         "in": "path",
@@ -131,6 +141,16 @@
           "enum": [
             "users"
           ],
+          "type": "string"
+        }
+      },
+      "TeamSearchQueryParameter": {
+        "description": "A search query to be used to filter teams by name.",
+        "in": "query",
+        "name": "filter",
+        "required": false,
+        "schema": {
+          "example": "ExampleTeamName",
           "type": "string"
         }
       },
@@ -26423,6 +26443,16 @@
               "format": "int64",
               "type": "integer"
             }
+          },
+          {
+            "description": "A search query to be used to filter services by name.",
+            "in": "query",
+            "name": "filter",
+            "required": false,
+            "schema": {
+              "example": "ExampleServiceName",
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -28866,6 +28896,16 @@
               "default": 0,
               "format": "int64",
               "type": "integer"
+            }
+          },
+          {
+            "description": "A search query to be used to filter teams by name.",
+            "in": "query",
+            "name": "filter",
+            "required": false,
+            "schema": {
+              "example": "ExampleTeamName",
+              "type": "string"
             }
           }
         ],
@@ -34827,11 +34867,11 @@
       "name": "Security Monitoring"
     },
     {
-      "description": "Create, update, delete and retrieve your organizations services.",
+      "description": "Create, update, delete and retrieve your organization's services.",
       "name": "Services"
     },
     {
-      "description": "Create, update, delete and retrieve your organizations Teams.",
+      "description": "Create, update, delete and retrieve your organization's Teams.",
       "name": "Teams"
     },
     {
