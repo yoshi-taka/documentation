@@ -3,6 +3,8 @@ title: Real User Monitoring
 kind: documentation
 description: "Visualize and analyze the performance of your front end applications as seen by your users."
 disable_toc: true
+aliases:
+  - /en/real_user_monitoring/setup
 further_reading:
 - link: "https://www.datadoghq.com/blog/real-user-monitoring-with-datadog/"
   tag: "Blog"
