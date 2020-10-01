@@ -326,7 +326,7 @@ h5{
     }
   }
 
-  ul{
+  ul {
     list-style-type: none;
     -webkit-padding-start: 22px;
     ul {
@@ -347,7 +347,15 @@ h5{
         }
       }
     }
+    ol {
+      li {
+        &:before {
+          content: normal;
+        }
+      }
+    }
   }
+
 
   pre {
     margin: 0 0 24px 0;
