@@ -3,7 +3,21 @@ components:
   examples: {}
   headers: {}
   links: {}
-  parameters: {}
+  parameters:
+    SlackChannelNamePathParameter:
+      description: The name of the Slack channel being operated on.
+      in: path
+      name: channel_name
+      required: true
+      schema:
+        type: string
+    SlackTeamNamePathParameter:
+      description: Your Slack team name.
+      in: path
+      name: team_name
+      required: true
+      schema:
+        type: string
   requestBodies: {}
   responses: {}
   schemas:
@@ -2853,6 +2867,8 @@ components:
           description: Final attribute or tag name to remap the sources to.
           example: operation_id
           type: string
+        target_format:
+          $ref: '#/components/schemas/TargetFormatType'
         target_type:
           default: attribute
           description: Defines if the final attribute or tag name is from log `attribute`
@@ -6248,7 +6264,6 @@ components:
       properties:
         account:
           description: Account to which the channel belongs to.
-          example: ''
           type: string
         channel_name:
           description: Your channel name.
@@ -6297,6 +6312,52 @@ components:
             $ref: '#/components/schemas/SlackServiceHook'
           type: array
       type: object
+    SlackIntegrationChannel:
+      description: The Slack channel configuration.
+      properties:
+        display:
+          description: Configuration options for what is shown in an alert event message.
+          properties:
+            message:
+              default: true
+              description: Show the main body of the alert event.
+              type: boolean
+            notified:
+              default: true
+              description: Show the list of @-handles in the alert event.
+              type: boolean
+            snapshot:
+              default: true
+              description: Show the alert event's snapshot image.
+              type: boolean
+            tags:
+              default: true
+              description: Show the scopes on which the monitor alerted.
+              type: boolean
+          type: object
+        name:
+          description: Your channel name.
+          example: '#general'
+          type: string
+      type: object
+    SlackIntegrationChannels:
+      description: A list of configured Slack channels.
+      example:
+      - display:
+          message: true
+          notified: true
+          snapshot: true
+          tags: true
+        name: '#channel_name_main_account'
+      - display:
+          message: true
+          notified: true
+          snapshot: false
+          tags: true
+        name: '#channel_name_doghouse'
+      items:
+        $ref: '#/components/schemas/SlackIntegrationChannel'
+      type: array
     SlackServiceHook:
       description: 'The service hook is generated for your Slack account in
 
@@ -6304,11 +6365,9 @@ components:
       properties:
         account:
           description: Your Slack account name.
-          example: ''
           type: string
         url:
           description: Your Slack service hook URL.
-          example: ''
           type: string
       required:
       - account
@@ -6693,8 +6752,9 @@ components:
           description: Whether or not a thumbnail is associated with the browser test.
           type: boolean
         timeToInteractive:
-          description: Time in second to wait before the browser test starts after
-            reaching the start URL.
+          description: 'Time in second to wait before the browser test starts after
+
+            reaching the start URL.'
           format: double
           type: number
       type: object
@@ -6844,22 +6904,29 @@ components:
           description: Metadata for the Synthetics tests run
           properties:
             ci:
+              description: Describe CI provider.
               properties:
                 pipeline:
+                  description: Name of the pipeline.
                   type: string
                 provider:
+                  description: Name of the CI provider.
                   type: string
               type: object
             git:
+              description: Git information.
               properties:
                 branch:
+                  description: Branch name.
                   type: string
                 commit_sha:
+                  description: Commit SHA.
                   type: string
               type: object
           type: object
         public_id:
           description: The public ID of the Synthetics test to trigger.
+          example: aaa-aaa-aaa
           type: string
         retry:
           $ref: '#/components/schemas/SyntheticsTestOptionsRetry'
@@ -6911,8 +6978,9 @@ components:
       - LOWER_EQUALS
       - MATCH_REGEX
     SyntheticsDeleteTestsPayload:
-      description: A JSON list of the ID or IDs of the Synthetic tests that you want
-        to delete.
+      description: 'A JSON list of the ID or IDs of the Synthetic tests that you want
+
+        to delete.'
       properties:
         public_ids:
           description: An array of Synthetic test IDs you want to delete.
@@ -6927,11 +6995,13 @@ components:
       description: Response object for deleting Synthetic tests.
       properties:
         deleted_tests:
-          description: Array of objects containing a deleted Synthetic test ID with
-            the associated deletion timestamp.
+          description: 'Array of objects containing a deleted Synthetic test ID with
+
+            the associated deletion timestamp.'
           items:
-            description: Object containing a deleted Synthetic test ID with the associated
-              deletion timestamp.
+            description: 'Object containing a deleted Synthetic test ID with the associated
+
+              deletion timestamp.'
             properties:
               deleted_at:
                 description: Deletion timestamp of the Synthetic test ID.
@@ -7044,6 +7114,7 @@ components:
       properties:
         description:
           description: Description of the global variable.
+          example: Example description
           type: string
         id:
           description: Unique identifier of the global variable.
@@ -7051,9 +7122,13 @@ components:
           type: string
         name:
           description: Name of the global variable.
+          example: MY_VARIABLE
           type: string
         tags:
           description: Tags of the global variable.
+          example:
+          - team:front
+          - test:workflow-1
           items:
             description: Tag name.
             type: string
@@ -7076,8 +7151,10 @@ components:
           description: Determines if the variable is secure.
           type: boolean
         value:
-          description: Value of the global variable. When reading a global variable,
-            the value will not be present if the variable is secure.
+          description: 'Value of the global variable. When reading a global variable,
+
+            the value will not be present if the variable is secure.'
+          example: example-value
           type: string
       required:
       - value
@@ -7091,8 +7168,9 @@ components:
           type: array
       type: object
     SyntheticsLocation:
-      description: Synthetics location that can be used when creating or editing a
-        test.
+      description: 'Synthetic location that can be used when creating or editing a
+
+        test.'
       properties:
         id:
           description: Unique identifier of the location.
@@ -7467,8 +7545,9 @@ components:
           $ref: '#/components/schemas/SyntheticsTestDetailsType'
       type: object
     SyntheticsTestDetailsSubType:
-      description: The sub-type of the Synthetic API test, `http`, `ssl`, `tcp` or
-        `dns`.
+      description: 'The sub-type of the Synthetic API test, `http`, `ssl`, `tcp` or
+
+        `dns`.'
       enum:
       - http
       - ssl
@@ -7517,8 +7596,9 @@ components:
       description: Object describing the extra options for a Synthetic test.
       properties:
         accept_self_signed:
-          description: For SSL test, whether or not the test should allow self signed
-            certificates.
+          description: 'For SSL test, whether or not the test should allow self signed
+
+            certificates.'
           type: boolean
         allow_insecure:
           description: Allows loading insecure content for an HTTP request.
@@ -7537,17 +7617,21 @@ components:
           format: int64
           type: integer
         min_location_failed:
-          description: Minimum number of locations in failure required to trigger
-            an alert.
+          description: 'Minimum number of locations in failure required to trigger
+
+            an alert.'
           format: int64
           type: integer
         monitor_options:
-          description: Object containing the options for a Synthetic test as a monitor
-            (e.g. renotification).
+          description: 'Object containing the options for a Synthetic test as a monitor
+
+            (for example, renotification).'
           properties:
             renotify_interval:
-              description: Time interval before renotifying if the test is still failing
-                (in minutes).
+              description: 'Time interval before renotifying if the test is still
+                failing
+
+                (in minutes).'
               format: int64
               maximum: 1440
               minimum: 0
@@ -7562,19 +7646,25 @@ components:
       description: Object describing the retry strategy to apply to a Synthetic test.
       properties:
         count:
-          description: Number of times a test needs to be retried before marking a
-            location as failed. Defaults to 0.
+          description: 'Number of times a test needs to be retried before marking
+            a
+
+            location as failed. Defaults to 0.'
           format: int64
           type: integer
         interval:
-          description: Time interval between retries (in milliseconds). Defaults to
-            300ms.
+          description: 'Time interval between retries (in milliseconds). Defaults
+            to
+
+            300ms.'
           format: double
           type: number
       type: object
     SyntheticsTestPauseStatus:
-      description: Define whether you want to start (`live`) or pause (`paused`) a
-        Synthetic test.
+      description: 'Define whether you want to start (`live`) or pause (`paused`)
+        a
+
+        Synthetic test.'
       enum:
       - live
       - paused
@@ -7713,6 +7803,7 @@ components:
         results:
           description: Information about the tests runs.
           items:
+            description: Information about a single test run.
             properties:
               device:
                 $ref: '#/components/schemas/SyntheticsDeviceID'
@@ -7843,6 +7934,24 @@ components:
           description: A list of tags to apply to the host.
           type: object
       type: object
+    TargetFormatType:
+      default: auto
+      description: 'If the target of the remapper is an attribute, try to cast the
+        value to a new specific type.
+
+        If the cast is not possible, the original type is kept. `string`, `integer`,
+        or `double` are the possible types.'
+      enum:
+      - auto
+      - string
+      - integer
+      - double
+      type: string
+      x-enum-varnames:
+      - AUTO
+      - STRING
+      - INTEGER
+      - DOUBLE
     TimeseriesWidgetDefinition:
       description: The timeseries visualization allows you to display the evolution
         of one or more metrics, log events, or Analyzed Spans over time.
@@ -7872,6 +7981,8 @@ components:
             $ref: '#/components/schemas/TimeseriesWidgetRequest'
           minItems: 1
           type: array
+        right_yaxis:
+          $ref: '#/components/schemas/WidgetAxis'
         show_legend:
           description: (screenboard only) Show the legend for this widget.
           type: boolean
@@ -7931,6 +8042,9 @@ components:
           type: array
         network_query:
           $ref: '#/components/schemas/LogQueryDefinition'
+        on_right_yaxis:
+          description: Whether or not to display a second y-axis on the right.
+          type: boolean
         process_query:
           $ref: '#/components/schemas/ProcessQueryDefinition'
         q:
@@ -12722,6 +12836,7 @@ paths:
       x-codegen-request-body-name: body
   /api/v1/integration/slack:
     delete:
+      deprecated: true
       description: Delete a Datadog-Slack integration.
       operationId: DeleteSlackIntegration
       responses:
@@ -12737,6 +12852,7 @@ paths:
       tags:
       - Slack Integration
     get:
+      deprecated: true
       description: Get all information about your Datadog-Slack integration.
       operationId: GetSlackIntegration
       responses:
@@ -12768,6 +12884,7 @@ paths:
       tags:
       - Slack Integration
     post:
+      deprecated: true
       description: 'Create a Datadog-Slack integration. Once created, add a channel
         to it with the
 
@@ -12805,6 +12922,7 @@ paths:
       - Slack Integration
       x-codegen-request-body-name: body
     put:
+      deprecated: true
       description: 'Add channels to your existing Datadog-Slack integration.
 
 
@@ -12835,6 +12953,188 @@ paths:
                 $ref: '#/components/schemas/APIErrorResponse'
           description: Authentication error
       summary: Add channels to Slack integration
+      tags:
+      - Slack Integration
+      x-codegen-request-body-name: body
+  /api/v1/integration/slack/configuration/accounts/{team_name}/channels:
+    get:
+      description: Get a list of all channels configured for your Datadog-Slack integration.
+      operationId: GetSlackIntegrationChannels
+      parameters:
+      - $ref: '#/components/parameters/SlackTeamNamePathParameter'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SlackIntegrationChannels'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+          description: Bad Request
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+          description: Authentication error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+          description: Item Not Found
+      summary: Get all channels in a Slack integration
+      tags:
+      - Slack Integration
+    post:
+      description: Add a channel to your Datadog-Slack integration.
+      operationId: CreateSlackIntegrationChannel
+      parameters:
+      - $ref: '#/components/parameters/SlackTeamNamePathParameter'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SlackIntegrationChannel'
+        description: Payload describing Slack channel to be created
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SlackIntegrationChannel'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+          description: Bad Request
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+          description: Authentication error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+          description: Item Not Found
+      summary: Create a Slack integration channel
+      tags:
+      - Slack Integration
+      x-codegen-request-body-name: body
+  /api/v1/integration/slack/configuration/accounts/{team_name}/channels/{channel_name}:
+    delete:
+      description: Remove a channel from your Datadog-Slack integration.
+      operationId: RemoveSlackIntegrationChannel
+      parameters:
+      - $ref: '#/components/parameters/SlackTeamNamePathParameter'
+      - $ref: '#/components/parameters/SlackChannelNamePathParameter'
+      responses:
+        '204':
+          description: The channel was removed successfully.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+          description: Bad Request
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+          description: Authentication error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+          description: Item Not Found
+      summary: Remove a Slack integration channel
+      tags:
+      - Slack Integration
+    get:
+      description: Get a channel configured for your Datadog-Slack integration.
+      operationId: GetSlackIntegrationChannel
+      parameters:
+      - $ref: '#/components/parameters/SlackTeamNamePathParameter'
+      - $ref: '#/components/parameters/SlackChannelNamePathParameter'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SlackIntegrationChannel'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+          description: Bad Request
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+          description: Authentication error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+          description: Item Not Found
+      summary: Get a Slack integration channel
+      tags:
+      - Slack Integration
+    patch:
+      description: Update a channel used in your Datadog-Slack integration.
+      operationId: UpdateSlackIntegrationChannel
+      parameters:
+      - $ref: '#/components/parameters/SlackTeamNamePathParameter'
+      - $ref: '#/components/parameters/SlackChannelNamePathParameter'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SlackIntegrationChannel'
+        description: Payload describing fields and values to be updated.
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SlackIntegrationChannel'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+          description: Bad Request
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+          description: Authentication error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+          description: Item Not Found
+      summary: Update a Slack integration channel
       tags:
       - Slack Integration
       x-codegen-request-body-name: body
@@ -15479,8 +15779,9 @@ paths:
         If you have any feedback, contact [Datadog support](https://docs.datadoghq.com/help/).'
   /api/v1/synthetics/locations:
     get:
-      description: Get the list of public and private locations available for Synthetics
-        tests. No arguments required.
+      description: 'Get the list of public and private locations available for Synthetic
+
+        tests. No arguments required.'
       operationId: ListLocations
       responses:
         '200':
@@ -15561,8 +15862,9 @@ paths:
       x-codegen-request-body-name: body
   /api/v1/synthetics/tests/browser/{public_id}:
     get:
-      description: Get the detailed configuration (including steps) associated with
-        a Synthetics browser test.
+      description: 'Get the detailed configuration (including steps) associated with
+
+        a Synthetic browser test.'
       operationId: GetBrowserTest
       parameters:
       - description: The public ID of the test to get details from.
@@ -15601,8 +15903,9 @@ paths:
         test.
       operationId: GetBrowserTestLatestResults
       parameters:
-      - description: The public ID of the browser test for which to search results
-          for.
+      - description: 'The public ID of the browser test for which to search results
+
+          for.'
         in: path
         name: public_id
         required: true
@@ -15660,8 +15963,9 @@ paths:
       description: Get a specific full result from a given (browser) Synthetic test.
       operationId: GetBrowserTestResult
       parameters:
-      - description: The public ID of the browser test to which the target result
-          belongs.
+      - description: 'The public ID of the browser test to which the target result
+
+          belongs.'
         in: path
         name: public_id
         required: true
@@ -17987,7 +18291,7 @@ tags:
   name: Service Level Objectives
 - description: 'Configure your [Datadog-Slack integration](https://docs.datadoghq.com/integrations/slack)
 
-    directly through Datadog API.'
+    directly through the Datadog API.'
   externalDocs:
     description: For more information about the Datadog-Slack integration, see the
       integration page.
