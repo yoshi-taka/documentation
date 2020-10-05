@@ -995,6 +995,72 @@ components:
           type: integer
       readOnly: true
       type: object
+    DistributionMetricCreateAttributes:
+      description: Object containing the definition of the distribution metric to
+        be created.
+      properties:
+        aggr_mode:
+          description: The mode to aggregate your tags over (`all_tags` or `custom_tags`).
+          example: custom_tags
+          type: string
+        group_by:
+          description: List of tag keys on which to group.
+          items:
+            description: Tag key to group by your metric.
+            type: string
+          type: array
+        include_percentiles:
+          description: Toggle to turn on percentile aggregation for the distribution
+            metric.
+          example: true
+          type: boolean
+        metric:
+          description: Metric name.
+          example: dist.http.endpoint.request
+          type: string
+      type: object
+    DistributionMetricCreateRequest:
+      description: Request Object that includes the distribution metric that you would
+        like to create.
+      properties:
+        data:
+          description: The distribution metric to create.
+          example:
+            attributes:
+              metric: dist.http.endpoint.request
+            type: distributions
+          properties:
+            attributes:
+              $ref: '#/components/schemas/DistributionMetricCreateAttributes'
+            type:
+              $ref: '#/components/schemas/DistributionMetricType'
+          type: object
+      required:
+      - data
+      type: object
+    DistributionMetricCreateResponse:
+      description: Response Object that includes the distribution metric that you
+        created.
+      properties:
+        data:
+          description: The distribution metric created.
+          properties:
+            attributes:
+              $ref: '#/components/schemas/DistributionMetricCreateAttributes'
+            type:
+              $ref: '#/components/schemas/DistributionMetricType'
+          readOnly: true
+          type: object
+      type: object
+    DistributionMetricType:
+      default: distributions
+      description: The distribution metric resource type.
+      enum:
+      - distributions
+      example: distributions
+      type: string
+      x-enum-varnames:
+      - DISTRIBUTIONS
     DistributionWidgetDefinition:
       description: "The Distribution visualization is another way of showing metrics\n\
         aggregated across one or several tags, such as hosts.\nUnlike the heat map,\
@@ -11019,6 +11085,54 @@ paths:
       summary: Update a dashboard
       tags:
       - Dashboards
+      x-codegen-request-body-name: body
+  /api/v1/distributions:
+    post:
+      description: Create and define a distribution metric with a set of groups to
+        aggregate over.
+      operationId: CreateDistributionMetric
+      requestBody:
+        content:
+          application/json:
+            examples:
+              distribution-metric-creation:
+                description: Creates and defines a distribution metric to aggregate
+                  over.
+                summary: Create Distribution Metric
+                value:
+                  data:
+                    attributes:
+                      group_by:
+                      - status
+                      - env
+                      include_percentiles: true
+                      metric: dist.http.endpoint.request
+                    type: distributions
+            schema:
+              $ref: '#/components/schemas/DistributionMetricCreateRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributionMetricCreateResponse'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+          description: Bad Request
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+          description: Authentication error
+      summary: Create a Distribution Metric
+      tags:
+      - Metrics
       x-codegen-request-body-name: body
   /api/v1/downtime:
     get:

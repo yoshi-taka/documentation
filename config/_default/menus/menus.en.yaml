@@ -2294,6 +2294,10 @@ api_v1:
     url: /api/v1/metrics/
     identifier: Metrics
     generated: true
+  - name: Create a Distribution Metric
+    parent: Metrics
+    url: '#create-a-distribution-metric'
+    generated: true
   - name: Get active metrics list
     parent: Metrics
     url: '#get-active-metrics-list'
@@ -2887,6 +2891,14 @@ api_v2:
   - name: Logs Archives
     url: /api/v2/logs-archives/
     identifier: Logs Archives
+    generated: true
+  - name: Get archive order
+    parent: Logs Archives
+    url: '#get-archive-order'
+    generated: true
+  - name: Update archive order
+    parent: Logs Archives
+    url: '#update-archive-order'
     generated: true
   - name: Get all archives
     parent: Logs Archives
