@@ -59,6 +59,10 @@
     "name": "Logs Archives",
     "description": "Archives forward all the logs ingested to a cloud storage system.\n\nSee the [Archives Page](https://app.datadoghq.com/logs/pipelines/archives)\nfor a list of the archives currently configured in our UI."
   },
+  "logs-facets": {
+    "name": "Logs Facets",
+    "description": "Manage configuration of [log facets](https://docs.datadoghq.com/logs/explorer/facets/).\nYou need an API and application key with Admin rights to interact with this endpoint."
+  },
   "logs-indexes": {
     "name": "Logs Indexes",
     "description": "[See API version 1](/api/v1/logs-indexes/)."

@@ -987,6 +987,50 @@
           "LOG"
         ]
       },
+      "LogsAPIError": {
+        "description": "Error returned by the Logs API",
+        "properties": {
+          "code": {
+            "description": "Code identifying the error",
+            "type": "string"
+          },
+          "details": {
+            "description": "Additional error details",
+            "items": "[Circular]",
+            "type": "array"
+          },
+          "message": {
+            "description": "Error message",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "LogsAPIErrorResponse": {
+        "description": "The response returned by the Logs API when errors occur.",
+        "properties": {
+          "error": {
+            "description": "Error returned by the Logs API",
+            "properties": {
+              "code": {
+                "description": "Code identifying the error",
+                "type": "string"
+              },
+              "details": {
+                "description": "Additional error details",
+                "items": "[Circular]",
+                "type": "array"
+              },
+              "message": {
+                "description": "Error message",
+                "type": "string"
+              }
+            },
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
       "LogsAggregateBucket": {
         "description": "A bucket values",
         "properties": {
@@ -4097,6 +4141,845 @@
           "TIMESERIES",
           "TOTAL"
         ]
+      },
+      "LogsFacet": {
+        "description": "Logs facet configuration.",
+        "properties": {
+          "attributes": {
+            "description": "The object describing a Datadog logs facet.",
+            "example": {
+              "facet_type": "list",
+              "name": "My Field",
+              "path": "@my.field",
+              "type": "auto"
+            },
+            "properties": {
+              "description": {
+                "description": "A text describing the new facet.",
+                "type": "string"
+              },
+              "facet_type": {
+                "default": "list",
+                "description": "A string defining the type of facet:\n`range` for measure facets (values are number), otherwise `list`",
+                "enum": [
+                  "list",
+                  "range"
+                ],
+                "example": "list",
+                "type": "string",
+                "x-enum-varnames": [
+                  "LIST",
+                  "RANGE"
+                ]
+              },
+              "group": {
+                "description": "The name of the group the facet belongs to.",
+                "type": "string"
+              },
+              "name": {
+                "description": "A name describing the new facet.",
+                "example": "My Field",
+                "type": "string"
+              },
+              "path": {
+                "description": "For tag based facets, the name of the tag. For logs-attribute based facets, the path of the attribute.",
+                "example": "@my.field",
+                "type": "string"
+              },
+              "type": {
+                "default": "auto",
+                "description": "A string defining the type of facet values.\nIf set to `auto`, Datadog uses the most appropriated choice.",
+                "enum": [
+                  "auto",
+                  "string",
+                  "boolean",
+                  "double",
+                  "integer"
+                ],
+                "example": "auto",
+                "type": "string",
+                "x-enum-varnames": [
+                  "AUTO",
+                  "STRING",
+                  "BOOLEAN",
+                  "DOUBLE",
+                  "INTEGER"
+                ]
+              }
+            },
+            "required": [
+              "path",
+              "name"
+            ],
+            "type": "object"
+          },
+          "id": {
+            "description": "The identifier of the facet.",
+            "type": "string"
+          },
+          "type": {
+            "default": "logs_facets",
+            "description": "Fixed string to describe a logs facet object.",
+            "enum": [
+              "logs_facets"
+            ],
+            "example": "logs_facets",
+            "type": "string",
+            "x-enum-varnames": [
+              "LOGS_FACETS"
+            ]
+          }
+        },
+        "type": "object"
+      },
+      "LogsFacetAttributes": {
+        "description": "The object describing a Datadog logs facet.",
+        "example": {
+          "facet_type": "list",
+          "name": "My Field",
+          "path": "@my.field",
+          "type": "auto"
+        },
+        "properties": {
+          "description": {
+            "description": "A text describing the new facet.",
+            "type": "string"
+          },
+          "facet_type": {
+            "default": "list",
+            "description": "A string defining the type of facet:\n`range` for measure facets (values are number), otherwise `list`",
+            "enum": [
+              "list",
+              "range"
+            ],
+            "example": "list",
+            "type": "string",
+            "x-enum-varnames": [
+              "LIST",
+              "RANGE"
+            ]
+          },
+          "group": {
+            "description": "The name of the group the facet belongs to.",
+            "type": "string"
+          },
+          "name": {
+            "description": "A name describing the new facet.",
+            "example": "My Field",
+            "type": "string"
+          },
+          "path": {
+            "description": "For tag based facets, the name of the tag. For logs-attribute based facets, the path of the attribute.",
+            "example": "@my.field",
+            "type": "string"
+          },
+          "type": {
+            "default": "auto",
+            "description": "A string defining the type of facet values.\nIf set to `auto`, Datadog uses the most appropriated choice.",
+            "enum": [
+              "auto",
+              "string",
+              "boolean",
+              "double",
+              "integer"
+            ],
+            "example": "auto",
+            "type": "string",
+            "x-enum-varnames": [
+              "AUTO",
+              "STRING",
+              "BOOLEAN",
+              "DOUBLE",
+              "INTEGER"
+            ]
+          }
+        },
+        "required": [
+          "path",
+          "name"
+        ],
+        "type": "object"
+      },
+      "LogsFacetCalculationType": {
+        "default": "list",
+        "description": "A string defining the type of facet:\n`range` for measure facets (values are number), otherwise `list`",
+        "enum": [
+          "list",
+          "range"
+        ],
+        "example": "list",
+        "type": "string",
+        "x-enum-varnames": [
+          "LIST",
+          "RANGE"
+        ]
+      },
+      "LogsFacetCreateData": {
+        "description": "The new facet properties.",
+        "properties": {
+          "attributes": {
+            "description": "The object describing a Datadog logs facet.",
+            "example": {
+              "facet_type": "list",
+              "name": "My Field",
+              "path": "@my.field",
+              "type": "auto"
+            },
+            "properties": {
+              "description": {
+                "description": "A text describing the new facet.",
+                "type": "string"
+              },
+              "facet_type": {
+                "default": "list",
+                "description": "A string defining the type of facet:\n`range` for measure facets (values are number), otherwise `list`",
+                "enum": [
+                  "list",
+                  "range"
+                ],
+                "example": "list",
+                "type": "string",
+                "x-enum-varnames": [
+                  "LIST",
+                  "RANGE"
+                ]
+              },
+              "group": {
+                "description": "The name of the group the facet belongs to.",
+                "type": "string"
+              },
+              "name": {
+                "description": "A name describing the new facet.",
+                "example": "My Field",
+                "type": "string"
+              },
+              "path": {
+                "description": "For tag based facets, the name of the tag. For logs-attribute based facets, the path of the attribute.",
+                "example": "@my.field",
+                "type": "string"
+              },
+              "type": {
+                "default": "auto",
+                "description": "A string defining the type of facet values.\nIf set to `auto`, Datadog uses the most appropriated choice.",
+                "enum": [
+                  "auto",
+                  "string",
+                  "boolean",
+                  "double",
+                  "integer"
+                ],
+                "example": "auto",
+                "type": "string",
+                "x-enum-varnames": [
+                  "AUTO",
+                  "STRING",
+                  "BOOLEAN",
+                  "DOUBLE",
+                  "INTEGER"
+                ]
+              }
+            },
+            "required": [
+              "path",
+              "name"
+            ],
+            "type": "object"
+          },
+          "type": {
+            "default": "logs_facets",
+            "description": "Fixed string to describe a logs facet object.",
+            "enum": [
+              "logs_facets"
+            ],
+            "example": "logs_facets",
+            "type": "string",
+            "x-enum-varnames": [
+              "LOGS_FACETS"
+            ]
+          }
+        },
+        "type": "object"
+      },
+      "LogsFacetCreateRequest": {
+        "description": "The new facet request body.",
+        "properties": {
+          "data": {
+            "description": "The new facet properties.",
+            "properties": {
+              "attributes": {
+                "description": "The object describing a Datadog logs facet.",
+                "example": {
+                  "facet_type": "list",
+                  "name": "My Field",
+                  "path": "@my.field",
+                  "type": "auto"
+                },
+                "properties": {
+                  "description": {
+                    "description": "A text describing the new facet.",
+                    "type": "string"
+                  },
+                  "facet_type": {
+                    "default": "list",
+                    "description": "A string defining the type of facet:\n`range` for measure facets (values are number), otherwise `list`",
+                    "enum": [
+                      "list",
+                      "range"
+                    ],
+                    "example": "list",
+                    "type": "string",
+                    "x-enum-varnames": [
+                      "LIST",
+                      "RANGE"
+                    ]
+                  },
+                  "group": {
+                    "description": "The name of the group the facet belongs to.",
+                    "type": "string"
+                  },
+                  "name": {
+                    "description": "A name describing the new facet.",
+                    "example": "My Field",
+                    "type": "string"
+                  },
+                  "path": {
+                    "description": "For tag based facets, the name of the tag. For logs-attribute based facets, the path of the attribute.",
+                    "example": "@my.field",
+                    "type": "string"
+                  },
+                  "type": {
+                    "default": "auto",
+                    "description": "A string defining the type of facet values.\nIf set to `auto`, Datadog uses the most appropriated choice.",
+                    "enum": [
+                      "auto",
+                      "string",
+                      "boolean",
+                      "double",
+                      "integer"
+                    ],
+                    "example": "auto",
+                    "type": "string",
+                    "x-enum-varnames": [
+                      "AUTO",
+                      "STRING",
+                      "BOOLEAN",
+                      "DOUBLE",
+                      "INTEGER"
+                    ]
+                  }
+                },
+                "required": [
+                  "path",
+                  "name"
+                ],
+                "type": "object"
+              },
+              "type": {
+                "default": "logs_facets",
+                "description": "Fixed string to describe a logs facet object.",
+                "enum": [
+                  "logs_facets"
+                ],
+                "example": "logs_facets",
+                "type": "string",
+                "x-enum-varnames": [
+                  "LOGS_FACETS"
+                ]
+              }
+            },
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "LogsFacetResponse": {
+        "description": "An object with the new facet configuration.",
+        "properties": {
+          "data": {
+            "description": "Logs facet configuration.",
+            "properties": {
+              "attributes": {
+                "description": "The object describing a Datadog logs facet.",
+                "example": {
+                  "facet_type": "list",
+                  "name": "My Field",
+                  "path": "@my.field",
+                  "type": "auto"
+                },
+                "properties": {
+                  "description": {
+                    "description": "A text describing the new facet.",
+                    "type": "string"
+                  },
+                  "facet_type": {
+                    "default": "list",
+                    "description": "A string defining the type of facet:\n`range` for measure facets (values are number), otherwise `list`",
+                    "enum": [
+                      "list",
+                      "range"
+                    ],
+                    "example": "list",
+                    "type": "string",
+                    "x-enum-varnames": [
+                      "LIST",
+                      "RANGE"
+                    ]
+                  },
+                  "group": {
+                    "description": "The name of the group the facet belongs to.",
+                    "type": "string"
+                  },
+                  "name": {
+                    "description": "A name describing the new facet.",
+                    "example": "My Field",
+                    "type": "string"
+                  },
+                  "path": {
+                    "description": "For tag based facets, the name of the tag. For logs-attribute based facets, the path of the attribute.",
+                    "example": "@my.field",
+                    "type": "string"
+                  },
+                  "type": {
+                    "default": "auto",
+                    "description": "A string defining the type of facet values.\nIf set to `auto`, Datadog uses the most appropriated choice.",
+                    "enum": [
+                      "auto",
+                      "string",
+                      "boolean",
+                      "double",
+                      "integer"
+                    ],
+                    "example": "auto",
+                    "type": "string",
+                    "x-enum-varnames": [
+                      "AUTO",
+                      "STRING",
+                      "BOOLEAN",
+                      "DOUBLE",
+                      "INTEGER"
+                    ]
+                  }
+                },
+                "required": [
+                  "path",
+                  "name"
+                ],
+                "type": "object"
+              },
+              "id": {
+                "description": "The identifier of the facet.",
+                "type": "string"
+              },
+              "type": {
+                "default": "logs_facets",
+                "description": "Fixed string to describe a logs facet object.",
+                "enum": [
+                  "logs_facets"
+                ],
+                "example": "logs_facets",
+                "type": "string",
+                "x-enum-varnames": [
+                  "LOGS_FACETS"
+                ]
+              }
+            },
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "LogsFacetType": {
+        "default": "logs_facets",
+        "description": "Fixed string to describe a logs facet object.",
+        "enum": [
+          "logs_facets"
+        ],
+        "example": "logs_facets",
+        "type": "string",
+        "x-enum-varnames": [
+          "LOGS_FACETS"
+        ]
+      },
+      "LogsFacetUpdateAttributes": {
+        "description": "An object describing editable attributes of a logs facet.",
+        "properties": {
+          "description": {
+            "description": "A text describing the new facet.",
+            "type": "string"
+          },
+          "group": {
+            "description": "The name of the group the facet belongs to.",
+            "type": "string"
+          },
+          "name": {
+            "description": "A name describing the new facet.",
+            "example": "My Field",
+            "type": "string"
+          },
+          "type": {
+            "default": "auto",
+            "description": "A string defining the type of facet values.\nIf set to `auto`, Datadog uses the most appropriated choice.",
+            "enum": [
+              "auto",
+              "string",
+              "boolean",
+              "double",
+              "integer"
+            ],
+            "example": "auto",
+            "type": "string",
+            "x-enum-varnames": [
+              "AUTO",
+              "STRING",
+              "BOOLEAN",
+              "DOUBLE",
+              "INTEGER"
+            ]
+          }
+        },
+        "type": "object"
+      },
+      "LogsFacetUpdateData": {
+        "description": "Editable facet properties.",
+        "properties": {
+          "attributes": {
+            "description": "An object describing editable attributes of a logs facet.",
+            "properties": {
+              "description": {
+                "description": "A text describing the new facet.",
+                "type": "string"
+              },
+              "group": {
+                "description": "The name of the group the facet belongs to.",
+                "type": "string"
+              },
+              "name": {
+                "description": "A name describing the new facet.",
+                "example": "My Field",
+                "type": "string"
+              },
+              "type": {
+                "default": "auto",
+                "description": "A string defining the type of facet values.\nIf set to `auto`, Datadog uses the most appropriated choice.",
+                "enum": [
+                  "auto",
+                  "string",
+                  "boolean",
+                  "double",
+                  "integer"
+                ],
+                "example": "auto",
+                "type": "string",
+                "x-enum-varnames": [
+                  "AUTO",
+                  "STRING",
+                  "BOOLEAN",
+                  "DOUBLE",
+                  "INTEGER"
+                ]
+              }
+            },
+            "type": "object"
+          },
+          "id": {
+            "description": "Identifier of the facet to edit",
+            "type": "string"
+          },
+          "type": {
+            "default": "logs_facets",
+            "description": "Fixed string to describe a logs facet object.",
+            "enum": [
+              "logs_facets"
+            ],
+            "example": "logs_facets",
+            "type": "string",
+            "x-enum-varnames": [
+              "LOGS_FACETS"
+            ]
+          }
+        },
+        "type": "object"
+      },
+      "LogsFacetUpdateRequest": {
+        "description": "Edit the facet request body.",
+        "properties": {
+          "data": {
+            "description": "Editable facet properties.",
+            "properties": {
+              "attributes": {
+                "description": "An object describing editable attributes of a logs facet.",
+                "properties": {
+                  "description": {
+                    "description": "A text describing the new facet.",
+                    "type": "string"
+                  },
+                  "group": {
+                    "description": "The name of the group the facet belongs to.",
+                    "type": "string"
+                  },
+                  "name": {
+                    "description": "A name describing the new facet.",
+                    "example": "My Field",
+                    "type": "string"
+                  },
+                  "type": {
+                    "default": "auto",
+                    "description": "A string defining the type of facet values.\nIf set to `auto`, Datadog uses the most appropriated choice.",
+                    "enum": [
+                      "auto",
+                      "string",
+                      "boolean",
+                      "double",
+                      "integer"
+                    ],
+                    "example": "auto",
+                    "type": "string",
+                    "x-enum-varnames": [
+                      "AUTO",
+                      "STRING",
+                      "BOOLEAN",
+                      "DOUBLE",
+                      "INTEGER"
+                    ]
+                  }
+                },
+                "type": "object"
+              },
+              "id": {
+                "description": "Identifier of the facet to edit",
+                "type": "string"
+              },
+              "type": {
+                "default": "logs_facets",
+                "description": "Fixed string to describe a logs facet object.",
+                "enum": [
+                  "logs_facets"
+                ],
+                "example": "logs_facets",
+                "type": "string",
+                "x-enum-varnames": [
+                  "LOGS_FACETS"
+                ]
+              }
+            },
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "LogsFacetValuesType": {
+        "default": "auto",
+        "description": "A string defining the type of facet values.\nIf set to `auto`, Datadog uses the most appropriated choice.",
+        "enum": [
+          "auto",
+          "string",
+          "boolean",
+          "double",
+          "integer"
+        ],
+        "example": "auto",
+        "type": "string",
+        "x-enum-varnames": [
+          "AUTO",
+          "STRING",
+          "BOOLEAN",
+          "DOUBLE",
+          "INTEGER"
+        ]
+      },
+      "LogsFacetsData": {
+        "description": "An array of logs facet configurations.",
+        "items": {
+          "description": "Logs facet configuration.",
+          "properties": {
+            "attributes": {
+              "description": "The object describing a Datadog logs facet.",
+              "example": {
+                "facet_type": "list",
+                "name": "My Field",
+                "path": "@my.field",
+                "type": "auto"
+              },
+              "properties": {
+                "description": {
+                  "description": "A text describing the new facet.",
+                  "type": "string"
+                },
+                "facet_type": {
+                  "default": "list",
+                  "description": "A string defining the type of facet:\n`range` for measure facets (values are number), otherwise `list`",
+                  "enum": [
+                    "list",
+                    "range"
+                  ],
+                  "example": "list",
+                  "type": "string",
+                  "x-enum-varnames": [
+                    "LIST",
+                    "RANGE"
+                  ]
+                },
+                "group": {
+                  "description": "The name of the group the facet belongs to.",
+                  "type": "string"
+                },
+                "name": {
+                  "description": "A name describing the new facet.",
+                  "example": "My Field",
+                  "type": "string"
+                },
+                "path": {
+                  "description": "For tag based facets, the name of the tag. For logs-attribute based facets, the path of the attribute.",
+                  "example": "@my.field",
+                  "type": "string"
+                },
+                "type": {
+                  "default": "auto",
+                  "description": "A string defining the type of facet values.\nIf set to `auto`, Datadog uses the most appropriated choice.",
+                  "enum": [
+                    "auto",
+                    "string",
+                    "boolean",
+                    "double",
+                    "integer"
+                  ],
+                  "example": "auto",
+                  "type": "string",
+                  "x-enum-varnames": [
+                    "AUTO",
+                    "STRING",
+                    "BOOLEAN",
+                    "DOUBLE",
+                    "INTEGER"
+                  ]
+                }
+              },
+              "required": [
+                "path",
+                "name"
+              ],
+              "type": "object"
+            },
+            "id": {
+              "description": "The identifier of the facet.",
+              "type": "string"
+            },
+            "type": {
+              "default": "logs_facets",
+              "description": "Fixed string to describe a logs facet object.",
+              "enum": [
+                "logs_facets"
+              ],
+              "example": "logs_facets",
+              "type": "string",
+              "x-enum-varnames": [
+                "LOGS_FACETS"
+              ]
+            }
+          },
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "LogsFacetsResponse": {
+        "description": "An object with all facet configurations for a given organization.",
+        "properties": {
+          "data": {
+            "description": "An array of logs facet configurations.",
+            "items": {
+              "description": "Logs facet configuration.",
+              "properties": {
+                "attributes": {
+                  "description": "The object describing a Datadog logs facet.",
+                  "example": {
+                    "facet_type": "list",
+                    "name": "My Field",
+                    "path": "@my.field",
+                    "type": "auto"
+                  },
+                  "properties": {
+                    "description": {
+                      "description": "A text describing the new facet.",
+                      "type": "string"
+                    },
+                    "facet_type": {
+                      "default": "list",
+                      "description": "A string defining the type of facet:\n`range` for measure facets (values are number), otherwise `list`",
+                      "enum": [
+                        "list",
+                        "range"
+                      ],
+                      "example": "list",
+                      "type": "string",
+                      "x-enum-varnames": [
+                        "LIST",
+                        "RANGE"
+                      ]
+                    },
+                    "group": {
+                      "description": "The name of the group the facet belongs to.",
+                      "type": "string"
+                    },
+                    "name": {
+                      "description": "A name describing the new facet.",
+                      "example": "My Field",
+                      "type": "string"
+                    },
+                    "path": {
+                      "description": "For tag based facets, the name of the tag. For logs-attribute based facets, the path of the attribute.",
+                      "example": "@my.field",
+                      "type": "string"
+                    },
+                    "type": {
+                      "default": "auto",
+                      "description": "A string defining the type of facet values.\nIf set to `auto`, Datadog uses the most appropriated choice.",
+                      "enum": [
+                        "auto",
+                        "string",
+                        "boolean",
+                        "double",
+                        "integer"
+                      ],
+                      "example": "auto",
+                      "type": "string",
+                      "x-enum-varnames": [
+                        "AUTO",
+                        "STRING",
+                        "BOOLEAN",
+                        "DOUBLE",
+                        "INTEGER"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "path",
+                    "name"
+                  ],
+                  "type": "object"
+                },
+                "id": {
+                  "description": "The identifier of the facet.",
+                  "type": "string"
+                },
+                "type": {
+                  "default": "logs_facets",
+                  "description": "Fixed string to describe a logs facet object.",
+                  "enum": [
+                    "logs_facets"
+                  ],
+                  "example": "logs_facets",
+                  "type": "string",
+                  "x-enum-varnames": [
+                    "LOGS_FACETS"
+                  ]
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
       },
       "LogsGroupBy": {
         "description": "A group by rule",
@@ -14775,6 +15658,297 @@
   },
   "openapi": "3.0.0",
   "paths": {
+    "/api/v1/logs/config/facets/{facet_id}": {
+      "patch": {
+        "description": "Update a facet as identified by its ID.\nReturns the Facet object from the request body when the request is successful.\n\nUsing the `PATCH` method updates your facet’s configuration by **replacing**\nyour current configuration with the new one sent to your Datadog organization.",
+        "operationId": "UpdateLogsFacet",
+        "parameters": [
+          {
+            "description": "The ID of the logs facet.",
+            "in": "path",
+            "name": "facet_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "description": "Edit the facet request body.",
+                "properties": {
+                  "data": {
+                    "description": "Editable facet properties.",
+                    "properties": {
+                      "attributes": {
+                        "description": "An object describing editable attributes of a logs facet.",
+                        "properties": {
+                          "description": {
+                            "description": "A text describing the new facet.",
+                            "type": "string"
+                          },
+                          "group": {
+                            "description": "The name of the group the facet belongs to.",
+                            "type": "string"
+                          },
+                          "name": {
+                            "description": "A name describing the new facet.",
+                            "example": "My Field",
+                            "type": "string"
+                          },
+                          "type": {
+                            "default": "auto",
+                            "description": "A string defining the type of facet values.\nIf set to `auto`, Datadog uses the most appropriated choice.",
+                            "enum": [
+                              "auto",
+                              "string",
+                              "boolean",
+                              "double",
+                              "integer"
+                            ],
+                            "example": "auto",
+                            "type": "string",
+                            "x-enum-varnames": [
+                              "AUTO",
+                              "STRING",
+                              "BOOLEAN",
+                              "DOUBLE",
+                              "INTEGER"
+                            ]
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "id": {
+                        "description": "Identifier of the facet to edit",
+                        "type": "string"
+                      },
+                      "type": {
+                        "default": "logs_facets",
+                        "description": "Fixed string to describe a logs facet object.",
+                        "enum": [
+                          "logs_facets"
+                        ],
+                        "example": "logs_facets",
+                        "type": "string",
+                        "x-enum-varnames": [
+                          "LOGS_FACETS"
+                        ]
+                      }
+                    },
+                    "type": "object"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "description": "The object containing the new log facet."
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "An object with the new facet configuration.",
+                  "properties": {
+                    "data": {
+                      "description": "Logs facet configuration.",
+                      "properties": {
+                        "attributes": {
+                          "description": "The object describing a Datadog logs facet.",
+                          "example": {
+                            "facet_type": "list",
+                            "name": "My Field",
+                            "path": "@my.field",
+                            "type": "auto"
+                          },
+                          "properties": {
+                            "description": {
+                              "description": "A text describing the new facet.",
+                              "type": "string"
+                            },
+                            "facet_type": {
+                              "default": "list",
+                              "description": "A string defining the type of facet:\n`range` for measure facets (values are number), otherwise `list`",
+                              "enum": [
+                                "list",
+                                "range"
+                              ],
+                              "example": "list",
+                              "type": "string",
+                              "x-enum-varnames": [
+                                "LIST",
+                                "RANGE"
+                              ]
+                            },
+                            "group": {
+                              "description": "The name of the group the facet belongs to.",
+                              "type": "string"
+                            },
+                            "name": {
+                              "description": "A name describing the new facet.",
+                              "example": "My Field",
+                              "type": "string"
+                            },
+                            "path": {
+                              "description": "For tag based facets, the name of the tag. For logs-attribute based facets, the path of the attribute.",
+                              "example": "@my.field",
+                              "type": "string"
+                            },
+                            "type": {
+                              "default": "auto",
+                              "description": "A string defining the type of facet values.\nIf set to `auto`, Datadog uses the most appropriated choice.",
+                              "enum": [
+                                "auto",
+                                "string",
+                                "boolean",
+                                "double",
+                                "integer"
+                              ],
+                              "example": "auto",
+                              "type": "string",
+                              "x-enum-varnames": [
+                                "AUTO",
+                                "STRING",
+                                "BOOLEAN",
+                                "DOUBLE",
+                                "INTEGER"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "path",
+                            "name"
+                          ],
+                          "type": "object"
+                        },
+                        "id": {
+                          "description": "The identifier of the facet.",
+                          "type": "string"
+                        },
+                        "type": {
+                          "default": "logs_facets",
+                          "description": "Fixed string to describe a logs facet object.",
+                          "enum": [
+                            "logs_facets"
+                          ],
+                          "example": "logs_facets",
+                          "type": "string",
+                          "x-enum-varnames": [
+                            "LOGS_FACETS"
+                          ]
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "The response returned by the Logs API when errors occur.",
+                  "properties": {
+                    "error": {
+                      "description": "Error returned by the Logs API",
+                      "properties": {
+                        "code": {
+                          "description": "Code identifying the error",
+                          "type": "string"
+                        },
+                        "details": {
+                          "description": "Additional error details",
+                          "items": "[Circular]",
+                          "type": "array"
+                        },
+                        "message": {
+                          "description": "Error message",
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Invalid Parameter Error"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "API error response.",
+                  "properties": {
+                    "errors": {
+                      "description": "A list of errors.",
+                      "items": {
+                        "description": "A list of items.",
+                        "example": "Bad Request",
+                        "type": "string"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "errors"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "The response returned by the Logs API when errors occur.",
+                  "properties": {
+                    "error": {
+                      "description": "Error returned by the Logs API",
+                      "properties": {
+                        "code": {
+                          "description": "Code identifying the error",
+                          "type": "string"
+                        },
+                        "details": {
+                          "description": "Additional error details",
+                          "items": "[Circular]",
+                          "type": "array"
+                        },
+                        "message": {
+                          "description": "Error message",
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          }
+        },
+        "summary": "Update a facet",
+        "tags": [
+          "Logs Facets"
+        ],
+        "x-codegen-request-body-name": "body",
+        "x-unstable": "**Note: This endpoint is in public beta.**\nIf you have any feedback, contact [Datadog support](https://docs.datadoghq.com/help/)."
+      }
+    },
     "/api/v2/dashboard/lists/manual/{dashboard_list_id}/dashboards": {
       "delete": {
         "description": "Delete dashboards from an existing dashboard list.",
@@ -18730,6 +19904,454 @@
         ],
         "x-codegen-request-body-name": "body",
         "x-unstable": "**Note**: This endpoint is in public beta.\nIf you have any feedback, contact [Datadog support](https://docs.datadoghq.com/help/)."
+      }
+    },
+    "/api/v2/logs/config/facets": {
+      "get": {
+        "description": "The Facet object describes the configuration of a logs facet.\nThis endpoint returns an array of the `LogFacets` objects for your organization.",
+        "operationId": "ListLogFacets",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "An object with all facet configurations for a given organization.",
+                  "properties": {
+                    "data": {
+                      "description": "An array of logs facet configurations.",
+                      "items": {
+                        "description": "Logs facet configuration.",
+                        "properties": {
+                          "attributes": {
+                            "description": "The object describing a Datadog logs facet.",
+                            "example": {
+                              "facet_type": "list",
+                              "name": "My Field",
+                              "path": "@my.field",
+                              "type": "auto"
+                            },
+                            "properties": {
+                              "description": {
+                                "description": "A text describing the new facet.",
+                                "type": "string"
+                              },
+                              "facet_type": {
+                                "default": "list",
+                                "description": "A string defining the type of facet:\n`range` for measure facets (values are number), otherwise `list`",
+                                "enum": [
+                                  "list",
+                                  "range"
+                                ],
+                                "example": "list",
+                                "type": "string",
+                                "x-enum-varnames": [
+                                  "LIST",
+                                  "RANGE"
+                                ]
+                              },
+                              "group": {
+                                "description": "The name of the group the facet belongs to.",
+                                "type": "string"
+                              },
+                              "name": {
+                                "description": "A name describing the new facet.",
+                                "example": "My Field",
+                                "type": "string"
+                              },
+                              "path": {
+                                "description": "For tag based facets, the name of the tag. For logs-attribute based facets, the path of the attribute.",
+                                "example": "@my.field",
+                                "type": "string"
+                              },
+                              "type": {
+                                "default": "auto",
+                                "description": "A string defining the type of facet values.\nIf set to `auto`, Datadog uses the most appropriated choice.",
+                                "enum": [
+                                  "auto",
+                                  "string",
+                                  "boolean",
+                                  "double",
+                                  "integer"
+                                ],
+                                "example": "auto",
+                                "type": "string",
+                                "x-enum-varnames": [
+                                  "AUTO",
+                                  "STRING",
+                                  "BOOLEAN",
+                                  "DOUBLE",
+                                  "INTEGER"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "path",
+                              "name"
+                            ],
+                            "type": "object"
+                          },
+                          "id": {
+                            "description": "The identifier of the facet.",
+                            "type": "string"
+                          },
+                          "type": {
+                            "default": "logs_facets",
+                            "description": "Fixed string to describe a logs facet object.",
+                            "enum": [
+                              "logs_facets"
+                            ],
+                            "example": "logs_facets",
+                            "type": "string",
+                            "x-enum-varnames": [
+                              "LOGS_FACETS"
+                            ]
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "API error response.",
+                  "properties": {
+                    "errors": {
+                      "description": "A list of errors.",
+                      "items": {
+                        "description": "A list of items.",
+                        "example": "Bad Request",
+                        "type": "string"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "errors"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Forbidden"
+          }
+        },
+        "summary": "List all facets",
+        "tags": [
+          "Logs Facets"
+        ],
+        "x-unstable": "**Note**: This endpoint is in public beta.\nIf you have any feedback, contact [Datadog support](https://docs.datadoghq.com/help/)."
+      },
+      "post": {
+        "description": "Create a new facet.\nReturns the Facet object from the request body when the request is successful.",
+        "operationId": "CreateLogsFacet",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "description": "The new facet request body.",
+                "properties": {
+                  "data": {
+                    "description": "The new facet properties.",
+                    "properties": {
+                      "attributes": {
+                        "description": "The object describing a Datadog logs facet.",
+                        "example": {
+                          "facet_type": "list",
+                          "name": "My Field",
+                          "path": "@my.field",
+                          "type": "auto"
+                        },
+                        "properties": {
+                          "description": {
+                            "description": "A text describing the new facet.",
+                            "type": "string"
+                          },
+                          "facet_type": {
+                            "default": "list",
+                            "description": "A string defining the type of facet:\n`range` for measure facets (values are number), otherwise `list`",
+                            "enum": [
+                              "list",
+                              "range"
+                            ],
+                            "example": "list",
+                            "type": "string",
+                            "x-enum-varnames": [
+                              "LIST",
+                              "RANGE"
+                            ]
+                          },
+                          "group": {
+                            "description": "The name of the group the facet belongs to.",
+                            "type": "string"
+                          },
+                          "name": {
+                            "description": "A name describing the new facet.",
+                            "example": "My Field",
+                            "type": "string"
+                          },
+                          "path": {
+                            "description": "For tag based facets, the name of the tag. For logs-attribute based facets, the path of the attribute.",
+                            "example": "@my.field",
+                            "type": "string"
+                          },
+                          "type": {
+                            "default": "auto",
+                            "description": "A string defining the type of facet values.\nIf set to `auto`, Datadog uses the most appropriated choice.",
+                            "enum": [
+                              "auto",
+                              "string",
+                              "boolean",
+                              "double",
+                              "integer"
+                            ],
+                            "example": "auto",
+                            "type": "string",
+                            "x-enum-varnames": [
+                              "AUTO",
+                              "STRING",
+                              "BOOLEAN",
+                              "DOUBLE",
+                              "INTEGER"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "path",
+                          "name"
+                        ],
+                        "type": "object"
+                      },
+                      "type": {
+                        "default": "logs_facets",
+                        "description": "Fixed string to describe a logs facet object.",
+                        "enum": [
+                          "logs_facets"
+                        ],
+                        "example": "logs_facets",
+                        "type": "string",
+                        "x-enum-varnames": [
+                          "LOGS_FACETS"
+                        ]
+                      }
+                    },
+                    "type": "object"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "description": "The object containing the new log facet."
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "An object with the new facet configuration.",
+                  "properties": {
+                    "data": {
+                      "description": "Logs facet configuration.",
+                      "properties": {
+                        "attributes": {
+                          "description": "The object describing a Datadog logs facet.",
+                          "example": {
+                            "facet_type": "list",
+                            "name": "My Field",
+                            "path": "@my.field",
+                            "type": "auto"
+                          },
+                          "properties": {
+                            "description": {
+                              "description": "A text describing the new facet.",
+                              "type": "string"
+                            },
+                            "facet_type": {
+                              "default": "list",
+                              "description": "A string defining the type of facet:\n`range` for measure facets (values are number), otherwise `list`",
+                              "enum": [
+                                "list",
+                                "range"
+                              ],
+                              "example": "list",
+                              "type": "string",
+                              "x-enum-varnames": [
+                                "LIST",
+                                "RANGE"
+                              ]
+                            },
+                            "group": {
+                              "description": "The name of the group the facet belongs to.",
+                              "type": "string"
+                            },
+                            "name": {
+                              "description": "A name describing the new facet.",
+                              "example": "My Field",
+                              "type": "string"
+                            },
+                            "path": {
+                              "description": "For tag based facets, the name of the tag. For logs-attribute based facets, the path of the attribute.",
+                              "example": "@my.field",
+                              "type": "string"
+                            },
+                            "type": {
+                              "default": "auto",
+                              "description": "A string defining the type of facet values.\nIf set to `auto`, Datadog uses the most appropriated choice.",
+                              "enum": [
+                                "auto",
+                                "string",
+                                "boolean",
+                                "double",
+                                "integer"
+                              ],
+                              "example": "auto",
+                              "type": "string",
+                              "x-enum-varnames": [
+                                "AUTO",
+                                "STRING",
+                                "BOOLEAN",
+                                "DOUBLE",
+                                "INTEGER"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "path",
+                            "name"
+                          ],
+                          "type": "object"
+                        },
+                        "id": {
+                          "description": "The identifier of the facet.",
+                          "type": "string"
+                        },
+                        "type": {
+                          "default": "logs_facets",
+                          "description": "Fixed string to describe a logs facet object.",
+                          "enum": [
+                            "logs_facets"
+                          ],
+                          "example": "logs_facets",
+                          "type": "string",
+                          "x-enum-varnames": [
+                            "LOGS_FACETS"
+                          ]
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "The response returned by the Logs API when errors occur.",
+                  "properties": {
+                    "error": {
+                      "description": "Error returned by the Logs API",
+                      "properties": {
+                        "code": {
+                          "description": "Code identifying the error",
+                          "type": "string"
+                        },
+                        "details": {
+                          "description": "Additional error details",
+                          "items": "[Circular]",
+                          "type": "array"
+                        },
+                        "message": {
+                          "description": "Error message",
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Invalid Parameter Error"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "API error response.",
+                  "properties": {
+                    "errors": {
+                      "description": "A list of errors.",
+                      "items": {
+                        "description": "A list of items.",
+                        "example": "Bad Request",
+                        "type": "string"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "errors"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "The response returned by the Logs API when errors occur.",
+                  "properties": {
+                    "error": {
+                      "description": "Error returned by the Logs API",
+                      "properties": {
+                        "code": {
+                          "description": "Code identifying the error",
+                          "type": "string"
+                        },
+                        "details": {
+                          "description": "Additional error details",
+                          "items": "[Circular]",
+                          "type": "array"
+                        },
+                        "message": {
+                          "description": "Error message",
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          }
+        },
+        "summary": "Create a facet",
+        "tags": [
+          "Logs Facets"
+        ],
+        "x-codegen-request-body-name": "body",
+        "x-unstable": "**Note: This endpoint is in public beta.**\nIf you have any feedback, contact [Datadog support](https://docs.datadoghq.com/help/)."
       }
     },
     "/api/v2/logs/config/restriction_queries": {
@@ -35451,6 +37073,14 @@
         "url": "https://docs.datadoghq.com/logs/archives/"
       },
       "name": "Logs Archives"
+    },
+    {
+      "description": "Manage configuration of [log facets](https://docs.datadoghq.com/logs/explorer/facets/).\nYou need an API and application key with Admin rights to interact with this endpoint.",
+      "externalDocs": {
+        "description": "Find out more at",
+        "url": "https://docs.datadoghq.com/logs/explorer/facets"
+      },
+      "name": "Logs Facets"
     },
     {
       "description": "[See API version 1](/api/v1/logs-indexes/).",

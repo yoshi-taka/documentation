@@ -59,6 +59,10 @@
     "name": "Logs Archives",
     "description": "[Check API version 2](/api/v2/logs-archives/)."
   },
+  "logs-facets": {
+    "name": "Logs Facets",
+    "description": "[Check API version 2](/api/v2/logs-facets/)."
+  },
   "logs-indexes": {
     "name": "Logs Indexes",
     "description": "Manage configuration of [log indexes](https://docs.datadoghq.com/logs/indexes/).\nYou need an API and application key with Admin rights to interact with this endpoint."
