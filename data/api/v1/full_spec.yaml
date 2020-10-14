@@ -1733,6 +1733,14 @@ components:
       type: string
       x-enum-varnames:
       - EVENT_TIMELINE
+    FormulaDataSource:
+      description: The data source being queried.
+      enum:
+      - metrics
+      example: metrics
+      type: string
+      x-enum-varnames:
+      - METRICS
     FreeTextWidgetDefinition:
       description: Free text is a widget that allows you to add headings to your screenboard.
         Commonly used to state the overall purpose of the dashboard. Only available
@@ -7942,6 +7950,40 @@ components:
       - STRING
       - INTEGER
       - DOUBLE
+    TimeSeriesFormulasAndFunctionsQueryDefinition:
+      description: Timeseries formula and functions query
+      example:
+        data_source: metrics
+        query: avg:system.cpu.user{*}
+      properties:
+        data_source:
+          $ref: '#/components/schemas/FormulaDataSource'
+        query:
+          description: Widget query
+          type: string
+      required:
+      - data_source
+      - query
+      type: object
+    TimeSeriesFormulasAndFunctionsRequest:
+      description: Timeseries widget using formulas and functions.
+      properties:
+        formulas:
+          description: Array of formulas.
+          items:
+            $ref: '#/components/schemas/WidgetFormulas'
+          type: array
+        queries:
+          additionalProperties:
+            description: Object containing widget queries
+            oneOf:
+            - $ref: '#/components/schemas/TimeSeriesFormulasAndFunctionsQueryDefinition'
+            type: object
+          description: Object containing widget queries
+          required:
+          - description
+          type: object
+      type: object
     TimeseriesWidgetDefinition:
       description: The timeseries visualization allows you to display the evolution
         of one or more metrics, log events, or Analyzed Spans over time.
@@ -7968,7 +8010,9 @@ components:
           example:
           - q/apm_query/log_query: <METRIC_1>{<SCOPE_1>}
           items:
-            $ref: '#/components/schemas/TimeseriesWidgetRequest'
+            anyOf:
+            - $ref: '#/components/schemas/TimeseriesWidgetRequest'
+            - $ref: '#/components/schemas/TimeSeriesFormulasAndFunctionsRequest'
           minItems: 1
           type: array
         right_yaxis:
@@ -9744,6 +9788,17 @@ components:
       required:
       - column
       - order
+      type: object
+    WidgetFormulas:
+      description: Formula to be used in a widget query.
+      properties:
+        alias:
+          description: Expression alias.
+          type: string
+        formula:
+          description: Expression utilizing formulas.
+          example: func(a) + b
+          type: string
       type: object
     WidgetGrouping:
       description: The kind of grouping to use.
