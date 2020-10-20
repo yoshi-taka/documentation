@@ -47,6 +47,10 @@
     "name": "IP Ranges",
     "description": "[See API version 1](/api/v1/ip-ranges/)."
   },
+  "incidents": {
+    "name": "Incidents",
+    "description": "Manage incident response."
+  },
   "key-management": {
     "name": "Key Management",
     "description": "[See API version 1](/api/v1/key-management/)."
