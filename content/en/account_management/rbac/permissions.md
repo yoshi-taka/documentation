@@ -35,61 +35,7 @@ By default, existing users are already associated with one of the three out-of-t
 
 In addition of the general permissions, it is possible to define more granular permissions for specific assets or data types. Permissions can be either global or scoped to a subset of elements. Find below the details of these options and the impact they have on each available permission.
 
-## Dashboards
-
-Find below the list of permissions for the dashboard assets:
-
-| Name                    | Description                             | Scopable |
-| ----------------------- | --------------------------------------- | -------- |
-| `dashboards_read`         | Ability to view dashboards              | false    |
-| `dashboards_write`        | Ability to create and change dashboards | false    |
-| `dashboards_public_share` | Ability to share dashboards externally  | false    |
-
-## Monitors
-
-Find below the list of permissions for the monitor assets:
-
-| Name              | Description                                  | Scopable |
-| ----------------- | -------------------------------------------- | -------- |
-| `monitors_read`     | Ability to view monitors                     | false    |
-| `monitors_write`    | Ability to change, mute, and delete monitors | false    |
-| `monitors_downtime` | Ability to set downtimes for your monitors   | false    |
-
-## Security Monitoring
-
-Find below the list of permissions for the Security Monitoring assets:
-
-| Name                             | Description                                         | Scopable |
-| -------------------------------- | --------------------------------------------------- | -------- |
-| `security_monitoring_rules_read`   | Ability to view detection rules                     | false    |
-| `security_monitoring_rules_write`  | Ability to create, edit, and delete detection rules | false    |
-| `security_monitoring_signals_read` | Ability to view security signals                    | false    |
-
-## Log Management
-
-Find below the list of permissions for the log configuration assets and log data:
-
-| Name                           | Description                                | Scopable |
-| ------------------------------ | ------------------------------------------ | -------- |
-| `logs_read_data`               | Read access to log data                   | true     |
-| `logs_modify_indexes`          | Update the definition of log indexes       | false    |
-| `logs_write_exclusion_filters` | Update indexes exclusion filters           | true     |
-| `logs_write_pipelines`         | Update log pipelines                       | false    |
-| `logs_write_processors`        | Update the log processors in a pipeline    | true     |
-| `logs_write_archives`          | Update the external archives configuration | false    |
-| `logs_read_archives`           | See archive configuration details, access content from the archive | true     |
-| `logs_write_historical_views`  | Rehydrate data from Archives               | false    |
-| `logs_public_config_api`       | Access the Logs Public Config API (r/w)    | false    |
-| `logs_generate_metrics`        | Access the Generate Metrics feature        | false    |
-
-
-Log Management RBAC also includes two legacy permissions, superseded by finer-grained and more extensive `logs_read_data` permission:
-
-| Name                           | Description                                | Scopable |
-| ------------------------------ | ------------------------------------------ | -------- |
-| `logs_live_tail`               | Access the live tail feature               | false    |
-| `logs_read_index_data`         | Read a subset log data (index based)       | true     |
-
+{{% permissions %}}
 
 {{< tabs >}}
 {{% tab "UI" %}}
@@ -257,7 +203,7 @@ Use the Logs Archive API either to [assign][1] or [revoke][2] a role from a give
 
 Grants the ability to write historical views, meaning to trigger a [Log Rehydration*][11].
 
-This permission is global. It enables users to trigger a rehydration for archives on which they have [Logs Read Archive][12] permission.
+This permission is global. It enables users to trigger a rehydration for archives on which they have [Logs Read Archive](#logs-read-archives) permission.
 
 {{< img src="account_management/rbac/logs_hv_roles_combination.png" alt="Write Historical View"  style="width:70%;">}}
 
@@ -280,10 +226,10 @@ For `service:ci-cd` logs that are rehydrated from the `Prod Archive`, note the f
 
 Grants the ability to create or modify log configuration through the Datadog API:
 
-* Configure [Archives][13] through the API
-* Configure [Indexes][14] through the API
-* Configure [Pipelines][15] through the API
-* Configure [Restriction Queries][16] through the API
+* Configure [Archives][12] through the API
+* Configure [Indexes][13] through the API
+* Configure [Pipelines][14] through the API
+* Configure [Restriction Queries][15] through the API
 
 The Log Public Configuration API permission only grants the permission to operate actions through API. For instance, a user without [Log Write Exclusion Filter Permission](#logs-write-exclusion-filters) cannot update sampling rate through API, even if granted The Log Public Configuration API permission.
 
@@ -296,7 +242,7 @@ Grant the following permissions to manage read access on subsets of log data:
 
 #### logs_read_data
 
-Read access to log data. If granted, other restrictions then apply such as `logs_read_index_data` or with [restriction query][16].
+Read access to log data. If granted, other restrictions then apply such as `logs_read_index_data` or with [restriction query][15].
 
 Roles are additive: if a user belongs to multiple roles, the data they have access to is the union of all the permissions from each of the roles.
 
@@ -357,8 +303,8 @@ This page won't display more than 50 restriction queries at once, and more than 
 * with the user filter, which is a convenient way to see what a specific user belonging to multiple roles actually has access to:
 
 {{< img src="account_management/rbac/logs_rq-view_as_user.png" alt="View as Roles"  style="width:70%;">}}
-[1]: https://app.datadoghq.com/logs/pipelines/data-access
 
+[1]: https://app.datadoghq.com/logs/pipelines/data-access
 {{% /tab %}}
 {{% tab "API" %}}
 
@@ -425,7 +371,7 @@ curl -X POST \
 
 #### logs_live_tail
 
-Grants a role the ability to use the [Live Tail][17] feature.
+Grants a role the ability to use the [Live Tail][16] feature.
 
 This permission is global, and grants access to the livetail irregardless of [Log Read Index Data](#logs-read-index-data) permission.
 
@@ -447,9 +393,8 @@ This permission is global, and grants access to the livetail irregardless of [Lo
 [9]: /logs/processing/pipelines/#pipeline-filters
 [10]: /logs/archives
 [11]: /logs/archives/rehydrating
-[12]: #logs-read-archives
-[13]: /api/v2/logs-archives/
-[14]: /api/v1/logs-indexes/
-[15]: /api/v1/logs-pipelines/
-[16]: /api/v2/logs-restriction-queries/
-[17]: /logs/explorer/live_tail/
+[12]: /api/v2/logs-archives/
+[13]: /api/v1/logs-indexes/
+[14]: /api/v1/logs-pipelines/
+[15]: /api/v2/logs-restriction-queries/
+[16]: /logs/explorer/live_tail/
