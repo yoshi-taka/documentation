@@ -14,6 +14,15 @@
           "type": "string"
         }
       },
+      "MetricID": {
+        "description": "The name of the log-based metric.",
+        "in": "path",
+        "name": "metric_id",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
       "PageNumber": {
         "description": "Specific page number to return.",
         "in": "query",
@@ -270,6 +279,31 @@
           }
         },
         "description": "Not Found"
+      },
+      "TooManyRequestsResponse": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "description": "API error response.",
+              "properties": {
+                "errors": {
+                  "description": "A list of errors.",
+                  "items": {
+                    "description": "A list of items.",
+                    "example": "Bad Request",
+                    "type": "string"
+                  },
+                  "type": "array"
+                }
+              },
+              "required": [
+                "errors"
+              ],
+              "type": "object"
+            }
+          }
+        },
+        "description": "Too Many Requests"
       },
       "UnauthorizedResponse": {
         "content": {
@@ -4681,6 +4715,906 @@
               }
             },
             "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "LogsMetricAttributes": {
+        "description": "The object describing a Datadog log-based metric.",
+        "properties": {
+          "compute": {
+            "description": "The compute rule to compute the log-based metric.",
+            "properties": {
+              "aggregation_type": {
+                "description": "The type of aggregation to use.",
+                "enum": [
+                  "count",
+                  "distribution"
+                ],
+                "type": "string",
+                "x-enum-varnames": [
+                  "COUNT",
+                  "DISTRIBUTION"
+                ]
+              },
+              "include_percentiles": {
+                "description": "It indicates whether percentiles should be computed or not for the metric (only used if the aggregation type is a \"distribution\").",
+                "type": "boolean"
+              },
+              "metric": {
+                "description": "The path to the value the log-based metric will aggregate on (only used if the aggregation type is a \"distribution\").",
+                "example": "@duration",
+                "type": "string"
+              }
+            },
+            "required": [
+              "aggregation_type"
+            ],
+            "type": "object"
+          },
+          "filter": {
+            "description": "The log-based metric filter. Logs matching this filter will be aggregated in this metric.",
+            "properties": {
+              "query": {
+                "default": "*",
+                "description": "The search query - following the log search syntax.",
+                "example": "service:web* AND @http.status_code:[200 TO 299]",
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "group_by": {
+            "description": "The rules for the group by.",
+            "items": {
+              "description": "A group by rule.",
+              "properties": {
+                "path": {
+                  "description": "The path to the value the log-based metric will be aggregated over.",
+                  "example": "@http.status_code",
+                  "type": "string"
+                },
+                "tag_name": {
+                  "description": "Eventual name of the tag that gets created. By default, the path attribute is used as the tag name.",
+                  "example": "status_code",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "path"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "compute"
+        ],
+        "type": "object"
+      },
+      "LogsMetricCompute": {
+        "description": "The compute rule to compute the log-based metric.",
+        "properties": {
+          "aggregation_type": {
+            "description": "The type of aggregation to use.",
+            "enum": [
+              "count",
+              "distribution"
+            ],
+            "type": "string",
+            "x-enum-varnames": [
+              "COUNT",
+              "DISTRIBUTION"
+            ]
+          },
+          "include_percentiles": {
+            "description": "It indicates whether percentiles should be computed or not for the metric (only used if the aggregation type is a \"distribution\").",
+            "type": "boolean"
+          },
+          "metric": {
+            "description": "The path to the value the log-based metric will aggregate on (only used if the aggregation type is a \"distribution\").",
+            "example": "@duration",
+            "type": "string"
+          }
+        },
+        "required": [
+          "aggregation_type"
+        ],
+        "type": "object"
+      },
+      "LogsMetricComputeAggregationType": {
+        "description": "The type of aggregation to use.",
+        "enum": [
+          "count",
+          "distribution"
+        ],
+        "type": "string",
+        "x-enum-varnames": [
+          "COUNT",
+          "DISTRIBUTION"
+        ]
+      },
+      "LogsMetricCreateData": {
+        "description": "The new log-based metric properties.",
+        "properties": {
+          "attributes": {
+            "description": "The object describing a Datadog log-based metric.",
+            "properties": {
+              "compute": {
+                "description": "The compute rule to compute the log-based metric.",
+                "properties": {
+                  "aggregation_type": {
+                    "description": "The type of aggregation to use.",
+                    "enum": [
+                      "count",
+                      "distribution"
+                    ],
+                    "type": "string",
+                    "x-enum-varnames": [
+                      "COUNT",
+                      "DISTRIBUTION"
+                    ]
+                  },
+                  "include_percentiles": {
+                    "description": "It indicates whether percentiles should be computed or not for the metric (only used if the aggregation type is a \"distribution\").",
+                    "type": "boolean"
+                  },
+                  "metric": {
+                    "description": "The path to the value the log-based metric will aggregate on (only used if the aggregation type is a \"distribution\").",
+                    "example": "@duration",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "aggregation_type"
+                ],
+                "type": "object"
+              },
+              "filter": {
+                "description": "The log-based metric filter. Logs matching this filter will be aggregated in this metric.",
+                "properties": {
+                  "query": {
+                    "default": "*",
+                    "description": "The search query - following the log search syntax.",
+                    "example": "service:web* AND @http.status_code:[200 TO 299]",
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              },
+              "group_by": {
+                "description": "The rules for the group by.",
+                "items": {
+                  "description": "A group by rule.",
+                  "properties": {
+                    "path": {
+                      "description": "The path to the value the log-based metric will be aggregated over.",
+                      "example": "@http.status_code",
+                      "type": "string"
+                    },
+                    "tag_name": {
+                      "description": "Eventual name of the tag that gets created. By default, the path attribute is used as the tag name.",
+                      "example": "status_code",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "path"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "compute"
+            ],
+            "type": "object"
+          },
+          "id": {
+            "description": "The name of the log-based metric.",
+            "example": "logs.page.load.count",
+            "type": "string"
+          },
+          "type": {
+            "default": "logs_metrics",
+            "description": "The type of the resource. The value should always be logs_metrics.",
+            "enum": [
+              "logs_metrics"
+            ],
+            "example": "logs_metrics",
+            "type": "string",
+            "x-enum-varnames": [
+              "LOGS_METRICS"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "attributes"
+        ],
+        "type": "object"
+      },
+      "LogsMetricCreateRequest": {
+        "description": "The new log-based metric body.",
+        "properties": {
+          "data": {
+            "description": "The new log-based metric properties.",
+            "properties": {
+              "attributes": {
+                "description": "The object describing a Datadog log-based metric.",
+                "properties": {
+                  "compute": {
+                    "description": "The compute rule to compute the log-based metric.",
+                    "properties": {
+                      "aggregation_type": {
+                        "description": "The type of aggregation to use.",
+                        "enum": [
+                          "count",
+                          "distribution"
+                        ],
+                        "type": "string",
+                        "x-enum-varnames": [
+                          "COUNT",
+                          "DISTRIBUTION"
+                        ]
+                      },
+                      "include_percentiles": {
+                        "description": "It indicates whether percentiles should be computed or not for the metric (only used if the aggregation type is a \"distribution\").",
+                        "type": "boolean"
+                      },
+                      "metric": {
+                        "description": "The path to the value the log-based metric will aggregate on (only used if the aggregation type is a \"distribution\").",
+                        "example": "@duration",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "aggregation_type"
+                    ],
+                    "type": "object"
+                  },
+                  "filter": {
+                    "description": "The log-based metric filter. Logs matching this filter will be aggregated in this metric.",
+                    "properties": {
+                      "query": {
+                        "default": "*",
+                        "description": "The search query - following the log search syntax.",
+                        "example": "service:web* AND @http.status_code:[200 TO 299]",
+                        "type": "string"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "group_by": {
+                    "description": "The rules for the group by.",
+                    "items": {
+                      "description": "A group by rule.",
+                      "properties": {
+                        "path": {
+                          "description": "The path to the value the log-based metric will be aggregated over.",
+                          "example": "@http.status_code",
+                          "type": "string"
+                        },
+                        "tag_name": {
+                          "description": "Eventual name of the tag that gets created. By default, the path attribute is used as the tag name.",
+                          "example": "status_code",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "path"
+                      ],
+                      "type": "object"
+                    },
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "compute"
+                ],
+                "type": "object"
+              },
+              "id": {
+                "description": "The name of the log-based metric.",
+                "example": "logs.page.load.count",
+                "type": "string"
+              },
+              "type": {
+                "default": "logs_metrics",
+                "description": "The type of the resource. The value should always be logs_metrics.",
+                "enum": [
+                  "logs_metrics"
+                ],
+                "example": "logs_metrics",
+                "type": "string",
+                "x-enum-varnames": [
+                  "LOGS_METRICS"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "type",
+              "attributes"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "type": "object"
+      },
+      "LogsMetricFilter": {
+        "description": "The log-based metric filter. Logs matching this filter will be aggregated in this metric.",
+        "properties": {
+          "query": {
+            "default": "*",
+            "description": "The search query - following the log search syntax.",
+            "example": "service:web* AND @http.status_code:[200 TO 299]",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "LogsMetricGroupBy": {
+        "description": "A group by rule.",
+        "properties": {
+          "path": {
+            "description": "The path to the value the log-based metric will be aggregated over.",
+            "example": "@http.status_code",
+            "type": "string"
+          },
+          "tag_name": {
+            "description": "Eventual name of the tag that gets created. By default, the path attribute is used as the tag name.",
+            "example": "status_code",
+            "type": "string"
+          }
+        },
+        "required": [
+          "path"
+        ],
+        "type": "object"
+      },
+      "LogsMetricID": {
+        "description": "The name of the log-based metric.",
+        "example": "logs.page.load.count",
+        "type": "string"
+      },
+      "LogsMetricResponse": {
+        "description": "The log-based metric object.",
+        "properties": {
+          "data": {
+            "description": "The log-based metric properties.",
+            "properties": {
+              "attributes": {
+                "description": "The object describing a Datadog log-based metric.",
+                "properties": {
+                  "compute": {
+                    "description": "The compute rule to compute the log-based metric.",
+                    "properties": {
+                      "aggregation_type": {
+                        "description": "The type of aggregation to use.",
+                        "enum": [
+                          "count",
+                          "distribution"
+                        ],
+                        "type": "string",
+                        "x-enum-varnames": [
+                          "COUNT",
+                          "DISTRIBUTION"
+                        ]
+                      },
+                      "include_percentiles": {
+                        "description": "It indicates whether percentiles should be computed or not for the metric (only used if the aggregation type is a \"distribution\").",
+                        "type": "boolean"
+                      },
+                      "metric": {
+                        "description": "The path to the value the log-based metric will aggregate on (only used if the aggregation type is a \"distribution\").",
+                        "example": "@duration",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "aggregation_type"
+                    ],
+                    "type": "object"
+                  },
+                  "filter": {
+                    "description": "The log-based metric filter. Logs matching this filter will be aggregated in this metric.",
+                    "properties": {
+                      "query": {
+                        "default": "*",
+                        "description": "The search query - following the log search syntax.",
+                        "example": "service:web* AND @http.status_code:[200 TO 299]",
+                        "type": "string"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "group_by": {
+                    "description": "The rules for the group by.",
+                    "items": {
+                      "description": "A group by rule.",
+                      "properties": {
+                        "path": {
+                          "description": "The path to the value the log-based metric will be aggregated over.",
+                          "example": "@http.status_code",
+                          "type": "string"
+                        },
+                        "tag_name": {
+                          "description": "Eventual name of the tag that gets created. By default, the path attribute is used as the tag name.",
+                          "example": "status_code",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "path"
+                      ],
+                      "type": "object"
+                    },
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "compute"
+                ],
+                "type": "object"
+              },
+              "id": {
+                "description": "The name of the log-based metric.",
+                "example": "logs.page.load.count",
+                "type": "string"
+              },
+              "type": {
+                "default": "logs_metrics",
+                "description": "The type of the resource. The value should always be logs_metrics.",
+                "enum": [
+                  "logs_metrics"
+                ],
+                "example": "logs_metrics",
+                "type": "string",
+                "x-enum-varnames": [
+                  "LOGS_METRICS"
+                ]
+              }
+            },
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "LogsMetricResponseData": {
+        "description": "The log-based metric properties.",
+        "properties": {
+          "attributes": {
+            "description": "The object describing a Datadog log-based metric.",
+            "properties": {
+              "compute": {
+                "description": "The compute rule to compute the log-based metric.",
+                "properties": {
+                  "aggregation_type": {
+                    "description": "The type of aggregation to use.",
+                    "enum": [
+                      "count",
+                      "distribution"
+                    ],
+                    "type": "string",
+                    "x-enum-varnames": [
+                      "COUNT",
+                      "DISTRIBUTION"
+                    ]
+                  },
+                  "include_percentiles": {
+                    "description": "It indicates whether percentiles should be computed or not for the metric (only used if the aggregation type is a \"distribution\").",
+                    "type": "boolean"
+                  },
+                  "metric": {
+                    "description": "The path to the value the log-based metric will aggregate on (only used if the aggregation type is a \"distribution\").",
+                    "example": "@duration",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "aggregation_type"
+                ],
+                "type": "object"
+              },
+              "filter": {
+                "description": "The log-based metric filter. Logs matching this filter will be aggregated in this metric.",
+                "properties": {
+                  "query": {
+                    "default": "*",
+                    "description": "The search query - following the log search syntax.",
+                    "example": "service:web* AND @http.status_code:[200 TO 299]",
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              },
+              "group_by": {
+                "description": "The rules for the group by.",
+                "items": {
+                  "description": "A group by rule.",
+                  "properties": {
+                    "path": {
+                      "description": "The path to the value the log-based metric will be aggregated over.",
+                      "example": "@http.status_code",
+                      "type": "string"
+                    },
+                    "tag_name": {
+                      "description": "Eventual name of the tag that gets created. By default, the path attribute is used as the tag name.",
+                      "example": "status_code",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "path"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "compute"
+            ],
+            "type": "object"
+          },
+          "id": {
+            "description": "The name of the log-based metric.",
+            "example": "logs.page.load.count",
+            "type": "string"
+          },
+          "type": {
+            "default": "logs_metrics",
+            "description": "The type of the resource. The value should always be logs_metrics.",
+            "enum": [
+              "logs_metrics"
+            ],
+            "example": "logs_metrics",
+            "type": "string",
+            "x-enum-varnames": [
+              "LOGS_METRICS"
+            ]
+          }
+        },
+        "type": "object"
+      },
+      "LogsMetricType": {
+        "default": "logs_metrics",
+        "description": "The type of the resource. The value should always be logs_metrics.",
+        "enum": [
+          "logs_metrics"
+        ],
+        "example": "logs_metrics",
+        "type": "string",
+        "x-enum-varnames": [
+          "LOGS_METRICS"
+        ]
+      },
+      "LogsMetricUpdateAttributes": {
+        "description": "The log-based metric properties that will be updated.",
+        "properties": {
+          "compute": {
+            "description": "The updated compute rule for the log-based metric.",
+            "properties": {
+              "include_percentiles": {
+                "description": "It indicates whether percentiles should be computed or not for the metric (only used if the aggregation type is a \"distribution\").",
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "filter": {
+            "description": "The log-based metric filter. Logs matching this filter will be aggregated in this metric.",
+            "properties": {
+              "query": {
+                "default": "*",
+                "description": "The search query - following the log search syntax.",
+                "example": "service:web* AND @http.status_code:[200 TO 299]",
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "group_by": {
+            "description": "The rules for the group by.",
+            "items": {
+              "description": "A group by rule.",
+              "properties": {
+                "path": {
+                  "description": "The path to the value the log-based metric will be aggregated over.",
+                  "example": "@http.status_code",
+                  "type": "string"
+                },
+                "tag_name": {
+                  "description": "Eventual name of the tag that gets created. By default, the path attribute is used as the tag name.",
+                  "example": "status_code",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "path"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "LogsMetricUpdateCompute": {
+        "description": "The updated compute rule for the log-based metric.",
+        "properties": {
+          "include_percentiles": {
+            "description": "It indicates whether percentiles should be computed or not for the metric (only used if the aggregation type is a \"distribution\").",
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
+      "LogsMetricUpdateData": {
+        "description": "The new log-based metric properties.",
+        "properties": {
+          "attributes": {
+            "description": "The log-based metric properties that will be updated.",
+            "properties": {
+              "compute": {
+                "description": "The updated compute rule for the log-based metric.",
+                "properties": {
+                  "include_percentiles": {
+                    "description": "It indicates whether percentiles should be computed or not for the metric (only used if the aggregation type is a \"distribution\").",
+                    "type": "boolean"
+                  }
+                },
+                "type": "object"
+              },
+              "filter": {
+                "description": "The log-based metric filter. Logs matching this filter will be aggregated in this metric.",
+                "properties": {
+                  "query": {
+                    "default": "*",
+                    "description": "The search query - following the log search syntax.",
+                    "example": "service:web* AND @http.status_code:[200 TO 299]",
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              },
+              "group_by": {
+                "description": "The rules for the group by.",
+                "items": {
+                  "description": "A group by rule.",
+                  "properties": {
+                    "path": {
+                      "description": "The path to the value the log-based metric will be aggregated over.",
+                      "example": "@http.status_code",
+                      "type": "string"
+                    },
+                    "tag_name": {
+                      "description": "Eventual name of the tag that gets created. By default, the path attribute is used as the tag name.",
+                      "example": "status_code",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "path"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              }
+            },
+            "type": "object"
+          },
+          "type": {
+            "default": "logs_metrics",
+            "description": "The type of the resource. The value should always be logs_metrics.",
+            "enum": [
+              "logs_metrics"
+            ],
+            "example": "logs_metrics",
+            "type": "string",
+            "x-enum-varnames": [
+              "LOGS_METRICS"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "attributes"
+        ],
+        "type": "object"
+      },
+      "LogsMetricUpdateRequest": {
+        "description": "The new log-based metric body.",
+        "properties": {
+          "data": {
+            "description": "The new log-based metric properties.",
+            "properties": {
+              "attributes": {
+                "description": "The log-based metric properties that will be updated.",
+                "properties": {
+                  "compute": {
+                    "description": "The updated compute rule for the log-based metric.",
+                    "properties": {
+                      "include_percentiles": {
+                        "description": "It indicates whether percentiles should be computed or not for the metric (only used if the aggregation type is a \"distribution\").",
+                        "type": "boolean"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "filter": {
+                    "description": "The log-based metric filter. Logs matching this filter will be aggregated in this metric.",
+                    "properties": {
+                      "query": {
+                        "default": "*",
+                        "description": "The search query - following the log search syntax.",
+                        "example": "service:web* AND @http.status_code:[200 TO 299]",
+                        "type": "string"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "group_by": {
+                    "description": "The rules for the group by.",
+                    "items": {
+                      "description": "A group by rule.",
+                      "properties": {
+                        "path": {
+                          "description": "The path to the value the log-based metric will be aggregated over.",
+                          "example": "@http.status_code",
+                          "type": "string"
+                        },
+                        "tag_name": {
+                          "description": "Eventual name of the tag that gets created. By default, the path attribute is used as the tag name.",
+                          "example": "status_code",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "path"
+                      ],
+                      "type": "object"
+                    },
+                    "type": "array"
+                  }
+                },
+                "type": "object"
+              },
+              "type": {
+                "default": "logs_metrics",
+                "description": "The type of the resource. The value should always be logs_metrics.",
+                "enum": [
+                  "logs_metrics"
+                ],
+                "example": "logs_metrics",
+                "type": "string",
+                "x-enum-varnames": [
+                  "LOGS_METRICS"
+                ]
+              }
+            },
+            "required": [
+              "type",
+              "attributes"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "type": "object"
+      },
+      "LogsMetricsResponse": {
+        "description": "All the available log-based metric objects.",
+        "properties": {
+          "data": {
+            "description": "A list of log-based metric objects.",
+            "items": {
+              "description": "The log-based metric properties.",
+              "properties": {
+                "attributes": {
+                  "description": "The object describing a Datadog log-based metric.",
+                  "properties": {
+                    "compute": {
+                      "description": "The compute rule to compute the log-based metric.",
+                      "properties": {
+                        "aggregation_type": {
+                          "description": "The type of aggregation to use.",
+                          "enum": [
+                            "count",
+                            "distribution"
+                          ],
+                          "type": "string",
+                          "x-enum-varnames": [
+                            "COUNT",
+                            "DISTRIBUTION"
+                          ]
+                        },
+                        "include_percentiles": {
+                          "description": "It indicates whether percentiles should be computed or not for the metric (only used if the aggregation type is a \"distribution\").",
+                          "type": "boolean"
+                        },
+                        "metric": {
+                          "description": "The path to the value the log-based metric will aggregate on (only used if the aggregation type is a \"distribution\").",
+                          "example": "@duration",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "aggregation_type"
+                      ],
+                      "type": "object"
+                    },
+                    "filter": {
+                      "description": "The log-based metric filter. Logs matching this filter will be aggregated in this metric.",
+                      "properties": {
+                        "query": {
+                          "default": "*",
+                          "description": "The search query - following the log search syntax.",
+                          "example": "service:web* AND @http.status_code:[200 TO 299]",
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "group_by": {
+                      "description": "The rules for the group by.",
+                      "items": {
+                        "description": "A group by rule.",
+                        "properties": {
+                          "path": {
+                            "description": "The path to the value the log-based metric will be aggregated over.",
+                            "example": "@http.status_code",
+                            "type": "string"
+                          },
+                          "tag_name": {
+                            "description": "Eventual name of the tag that gets created. By default, the path attribute is used as the tag name.",
+                            "example": "status_code",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "path"
+                        ],
+                        "type": "object"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "compute"
+                  ],
+                  "type": "object"
+                },
+                "id": {
+                  "description": "The name of the log-based metric.",
+                  "example": "logs.page.load.count",
+                  "type": "string"
+                },
+                "type": {
+                  "default": "logs_metrics",
+                  "description": "The type of the resource. The value should always be logs_metrics.",
+                  "enum": [
+                    "logs_metrics"
+                  ],
+                  "example": "logs_metrics",
+                  "type": "string",
+                  "x-enum-varnames": [
+                    "LOGS_METRICS"
+                  ]
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
           }
         },
         "type": "object"
@@ -18964,6 +19898,1126 @@
         ],
         "x-codegen-request-body-name": "body",
         "x-unstable": "**Note**: This endpoint is in public beta.\nIf you have any feedback, contact [Datadog support](https://docs.datadoghq.com/help/)."
+      }
+    },
+    "/api/v2/logs/config/metrics": {
+      "get": {
+        "description": "Get the list of configured log-based metrics with their definitions.",
+        "operationId": "ListLogsMetrics",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "All the available log-based metric objects.",
+                  "properties": {
+                    "data": {
+                      "description": "A list of log-based metric objects.",
+                      "items": {
+                        "description": "The log-based metric properties.",
+                        "properties": {
+                          "attributes": {
+                            "description": "The object describing a Datadog log-based metric.",
+                            "properties": {
+                              "compute": {
+                                "description": "The compute rule to compute the log-based metric.",
+                                "properties": {
+                                  "aggregation_type": {
+                                    "description": "The type of aggregation to use.",
+                                    "enum": [
+                                      "count",
+                                      "distribution"
+                                    ],
+                                    "type": "string",
+                                    "x-enum-varnames": [
+                                      "COUNT",
+                                      "DISTRIBUTION"
+                                    ]
+                                  },
+                                  "include_percentiles": {
+                                    "description": "It indicates whether percentiles should be computed or not for the metric (only used if the aggregation type is a \"distribution\").",
+                                    "type": "boolean"
+                                  },
+                                  "metric": {
+                                    "description": "The path to the value the log-based metric will aggregate on (only used if the aggregation type is a \"distribution\").",
+                                    "example": "@duration",
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "aggregation_type"
+                                ],
+                                "type": "object"
+                              },
+                              "filter": {
+                                "description": "The log-based metric filter. Logs matching this filter will be aggregated in this metric.",
+                                "properties": {
+                                  "query": {
+                                    "default": "*",
+                                    "description": "The search query - following the log search syntax.",
+                                    "example": "service:web* AND @http.status_code:[200 TO 299]",
+                                    "type": "string"
+                                  }
+                                },
+                                "type": "object"
+                              },
+                              "group_by": {
+                                "description": "The rules for the group by.",
+                                "items": {
+                                  "description": "A group by rule.",
+                                  "properties": {
+                                    "path": {
+                                      "description": "The path to the value the log-based metric will be aggregated over.",
+                                      "example": "@http.status_code",
+                                      "type": "string"
+                                    },
+                                    "tag_name": {
+                                      "description": "Eventual name of the tag that gets created. By default, the path attribute is used as the tag name.",
+                                      "example": "status_code",
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "path"
+                                  ],
+                                  "type": "object"
+                                },
+                                "type": "array"
+                              }
+                            },
+                            "required": [
+                              "compute"
+                            ],
+                            "type": "object"
+                          },
+                          "id": {
+                            "description": "The name of the log-based metric.",
+                            "example": "logs.page.load.count",
+                            "type": "string"
+                          },
+                          "type": {
+                            "default": "logs_metrics",
+                            "description": "The type of the resource. The value should always be logs_metrics.",
+                            "enum": [
+                              "logs_metrics"
+                            ],
+                            "example": "logs_metrics",
+                            "type": "string",
+                            "x-enum-varnames": [
+                              "LOGS_METRICS"
+                            ]
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "API error response.",
+                  "properties": {
+                    "errors": {
+                      "description": "A list of errors.",
+                      "items": {
+                        "description": "A list of items.",
+                        "example": "Bad Request",
+                        "type": "string"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "errors"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Not Authorized"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "API error response.",
+                  "properties": {
+                    "errors": {
+                      "description": "A list of errors.",
+                      "items": {
+                        "description": "A list of items.",
+                        "example": "Bad Request",
+                        "type": "string"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "errors"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          }
+        },
+        "summary": "Get all log-based metrics",
+        "tags": [
+          "Logs Metrics"
+        ]
+      },
+      "post": {
+        "description": "Create a metric based on your ingested logs in your organization.\nReturns the log-based metric object from the request body when the request is successful.",
+        "operationId": "CreateLogsMetric",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "description": "The new log-based metric body.",
+                "properties": {
+                  "data": {
+                    "description": "The new log-based metric properties.",
+                    "properties": {
+                      "attributes": {
+                        "description": "The object describing a Datadog log-based metric.",
+                        "properties": {
+                          "compute": {
+                            "description": "The compute rule to compute the log-based metric.",
+                            "properties": {
+                              "aggregation_type": {
+                                "description": "The type of aggregation to use.",
+                                "enum": [
+                                  "count",
+                                  "distribution"
+                                ],
+                                "type": "string",
+                                "x-enum-varnames": [
+                                  "COUNT",
+                                  "DISTRIBUTION"
+                                ]
+                              },
+                              "include_percentiles": {
+                                "description": "It indicates whether percentiles should be computed or not for the metric (only used if the aggregation type is a \"distribution\").",
+                                "type": "boolean"
+                              },
+                              "metric": {
+                                "description": "The path to the value the log-based metric will aggregate on (only used if the aggregation type is a \"distribution\").",
+                                "example": "@duration",
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "aggregation_type"
+                            ],
+                            "type": "object"
+                          },
+                          "filter": {
+                            "description": "The log-based metric filter. Logs matching this filter will be aggregated in this metric.",
+                            "properties": {
+                              "query": {
+                                "default": "*",
+                                "description": "The search query - following the log search syntax.",
+                                "example": "service:web* AND @http.status_code:[200 TO 299]",
+                                "type": "string"
+                              }
+                            },
+                            "type": "object"
+                          },
+                          "group_by": {
+                            "description": "The rules for the group by.",
+                            "items": {
+                              "description": "A group by rule.",
+                              "properties": {
+                                "path": {
+                                  "description": "The path to the value the log-based metric will be aggregated over.",
+                                  "example": "@http.status_code",
+                                  "type": "string"
+                                },
+                                "tag_name": {
+                                  "description": "Eventual name of the tag that gets created. By default, the path attribute is used as the tag name.",
+                                  "example": "status_code",
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "path"
+                              ],
+                              "type": "object"
+                            },
+                            "type": "array"
+                          }
+                        },
+                        "required": [
+                          "compute"
+                        ],
+                        "type": "object"
+                      },
+                      "id": {
+                        "description": "The name of the log-based metric.",
+                        "example": "logs.page.load.count",
+                        "type": "string"
+                      },
+                      "type": {
+                        "default": "logs_metrics",
+                        "description": "The type of the resource. The value should always be logs_metrics.",
+                        "enum": [
+                          "logs_metrics"
+                        ],
+                        "example": "logs_metrics",
+                        "type": "string",
+                        "x-enum-varnames": [
+                          "LOGS_METRICS"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "type",
+                      "attributes"
+                    ],
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "data"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "description": "The definition of the new log-based metric.",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "The log-based metric object.",
+                  "properties": {
+                    "data": {
+                      "description": "The log-based metric properties.",
+                      "properties": {
+                        "attributes": {
+                          "description": "The object describing a Datadog log-based metric.",
+                          "properties": {
+                            "compute": {
+                              "description": "The compute rule to compute the log-based metric.",
+                              "properties": {
+                                "aggregation_type": {
+                                  "description": "The type of aggregation to use.",
+                                  "enum": [
+                                    "count",
+                                    "distribution"
+                                  ],
+                                  "type": "string",
+                                  "x-enum-varnames": [
+                                    "COUNT",
+                                    "DISTRIBUTION"
+                                  ]
+                                },
+                                "include_percentiles": {
+                                  "description": "It indicates whether percentiles should be computed or not for the metric (only used if the aggregation type is a \"distribution\").",
+                                  "type": "boolean"
+                                },
+                                "metric": {
+                                  "description": "The path to the value the log-based metric will aggregate on (only used if the aggregation type is a \"distribution\").",
+                                  "example": "@duration",
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "aggregation_type"
+                              ],
+                              "type": "object"
+                            },
+                            "filter": {
+                              "description": "The log-based metric filter. Logs matching this filter will be aggregated in this metric.",
+                              "properties": {
+                                "query": {
+                                  "default": "*",
+                                  "description": "The search query - following the log search syntax.",
+                                  "example": "service:web* AND @http.status_code:[200 TO 299]",
+                                  "type": "string"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "group_by": {
+                              "description": "The rules for the group by.",
+                              "items": {
+                                "description": "A group by rule.",
+                                "properties": {
+                                  "path": {
+                                    "description": "The path to the value the log-based metric will be aggregated over.",
+                                    "example": "@http.status_code",
+                                    "type": "string"
+                                  },
+                                  "tag_name": {
+                                    "description": "Eventual name of the tag that gets created. By default, the path attribute is used as the tag name.",
+                                    "example": "status_code",
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "path"
+                                ],
+                                "type": "object"
+                              },
+                              "type": "array"
+                            }
+                          },
+                          "required": [
+                            "compute"
+                          ],
+                          "type": "object"
+                        },
+                        "id": {
+                          "description": "The name of the log-based metric.",
+                          "example": "logs.page.load.count",
+                          "type": "string"
+                        },
+                        "type": {
+                          "default": "logs_metrics",
+                          "description": "The type of the resource. The value should always be logs_metrics.",
+                          "enum": [
+                            "logs_metrics"
+                          ],
+                          "example": "logs_metrics",
+                          "type": "string",
+                          "x-enum-varnames": [
+                            "LOGS_METRICS"
+                          ]
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "API error response.",
+                  "properties": {
+                    "errors": {
+                      "description": "A list of errors.",
+                      "items": {
+                        "description": "A list of items.",
+                        "example": "Bad Request",
+                        "type": "string"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "errors"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "API error response.",
+                  "properties": {
+                    "errors": {
+                      "description": "A list of errors.",
+                      "items": {
+                        "description": "A list of items.",
+                        "example": "Bad Request",
+                        "type": "string"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "errors"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Not Authorized"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "API error response.",
+                  "properties": {
+                    "errors": {
+                      "description": "A list of errors.",
+                      "items": {
+                        "description": "A list of items.",
+                        "example": "Bad Request",
+                        "type": "string"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "errors"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          }
+        },
+        "summary": "Create a log-based metric",
+        "tags": [
+          "Logs Metrics"
+        ],
+        "x-codegen-request-body-name": "body"
+      }
+    },
+    "/api/v2/logs/config/metrics/{metric_id}": {
+      "delete": {
+        "description": "Delete a specific log-based metric from your organization.",
+        "operationId": "DeleteLogsMetric",
+        "parameters": [
+          {
+            "description": "The name of the log-based metric.",
+            "in": "path",
+            "name": "metric_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "API error response.",
+                  "properties": {
+                    "errors": {
+                      "description": "A list of errors.",
+                      "items": {
+                        "description": "A list of items.",
+                        "example": "Bad Request",
+                        "type": "string"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "errors"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Not Authorized"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "API error response.",
+                  "properties": {
+                    "errors": {
+                      "description": "A list of errors.",
+                      "items": {
+                        "description": "A list of items.",
+                        "example": "Bad Request",
+                        "type": "string"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "errors"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "API error response.",
+                  "properties": {
+                    "errors": {
+                      "description": "A list of errors.",
+                      "items": {
+                        "description": "A list of items.",
+                        "example": "Bad Request",
+                        "type": "string"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "errors"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          }
+        },
+        "summary": "Delete a log-based metric",
+        "tags": [
+          "Logs Metrics"
+        ]
+      },
+      "get": {
+        "description": "Get a specific log-based metric from your organization.",
+        "operationId": "GetLogsMetric",
+        "parameters": [
+          {
+            "description": "The name of the log-based metric.",
+            "in": "path",
+            "name": "metric_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "The log-based metric object.",
+                  "properties": {
+                    "data": {
+                      "description": "The log-based metric properties.",
+                      "properties": {
+                        "attributes": {
+                          "description": "The object describing a Datadog log-based metric.",
+                          "properties": {
+                            "compute": {
+                              "description": "The compute rule to compute the log-based metric.",
+                              "properties": {
+                                "aggregation_type": {
+                                  "description": "The type of aggregation to use.",
+                                  "enum": [
+                                    "count",
+                                    "distribution"
+                                  ],
+                                  "type": "string",
+                                  "x-enum-varnames": [
+                                    "COUNT",
+                                    "DISTRIBUTION"
+                                  ]
+                                },
+                                "include_percentiles": {
+                                  "description": "It indicates whether percentiles should be computed or not for the metric (only used if the aggregation type is a \"distribution\").",
+                                  "type": "boolean"
+                                },
+                                "metric": {
+                                  "description": "The path to the value the log-based metric will aggregate on (only used if the aggregation type is a \"distribution\").",
+                                  "example": "@duration",
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "aggregation_type"
+                              ],
+                              "type": "object"
+                            },
+                            "filter": {
+                              "description": "The log-based metric filter. Logs matching this filter will be aggregated in this metric.",
+                              "properties": {
+                                "query": {
+                                  "default": "*",
+                                  "description": "The search query - following the log search syntax.",
+                                  "example": "service:web* AND @http.status_code:[200 TO 299]",
+                                  "type": "string"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "group_by": {
+                              "description": "The rules for the group by.",
+                              "items": {
+                                "description": "A group by rule.",
+                                "properties": {
+                                  "path": {
+                                    "description": "The path to the value the log-based metric will be aggregated over.",
+                                    "example": "@http.status_code",
+                                    "type": "string"
+                                  },
+                                  "tag_name": {
+                                    "description": "Eventual name of the tag that gets created. By default, the path attribute is used as the tag name.",
+                                    "example": "status_code",
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "path"
+                                ],
+                                "type": "object"
+                              },
+                              "type": "array"
+                            }
+                          },
+                          "required": [
+                            "compute"
+                          ],
+                          "type": "object"
+                        },
+                        "id": {
+                          "description": "The name of the log-based metric.",
+                          "example": "logs.page.load.count",
+                          "type": "string"
+                        },
+                        "type": {
+                          "default": "logs_metrics",
+                          "description": "The type of the resource. The value should always be logs_metrics.",
+                          "enum": [
+                            "logs_metrics"
+                          ],
+                          "example": "logs_metrics",
+                          "type": "string",
+                          "x-enum-varnames": [
+                            "LOGS_METRICS"
+                          ]
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "API error response.",
+                  "properties": {
+                    "errors": {
+                      "description": "A list of errors.",
+                      "items": {
+                        "description": "A list of items.",
+                        "example": "Bad Request",
+                        "type": "string"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "errors"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Not Authorized"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "API error response.",
+                  "properties": {
+                    "errors": {
+                      "description": "A list of errors.",
+                      "items": {
+                        "description": "A list of items.",
+                        "example": "Bad Request",
+                        "type": "string"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "errors"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "API error response.",
+                  "properties": {
+                    "errors": {
+                      "description": "A list of errors.",
+                      "items": {
+                        "description": "A list of items.",
+                        "example": "Bad Request",
+                        "type": "string"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "errors"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          }
+        },
+        "summary": "Get a log-based metric",
+        "tags": [
+          "Logs Metrics"
+        ]
+      },
+      "patch": {
+        "description": "Update a specific log-based metric from your organization.\nReturns the log-based metric object from the request body when the request is successful.",
+        "operationId": "UpdateLogsMetric",
+        "parameters": [
+          {
+            "description": "The name of the log-based metric.",
+            "in": "path",
+            "name": "metric_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "description": "The new log-based metric body.",
+                "properties": {
+                  "data": {
+                    "description": "The new log-based metric properties.",
+                    "properties": {
+                      "attributes": {
+                        "description": "The log-based metric properties that will be updated.",
+                        "properties": {
+                          "compute": {
+                            "description": "The updated compute rule for the log-based metric.",
+                            "properties": {
+                              "include_percentiles": {
+                                "description": "It indicates whether percentiles should be computed or not for the metric (only used if the aggregation type is a \"distribution\").",
+                                "type": "boolean"
+                              }
+                            },
+                            "type": "object"
+                          },
+                          "filter": {
+                            "description": "The log-based metric filter. Logs matching this filter will be aggregated in this metric.",
+                            "properties": {
+                              "query": {
+                                "default": "*",
+                                "description": "The search query - following the log search syntax.",
+                                "example": "service:web* AND @http.status_code:[200 TO 299]",
+                                "type": "string"
+                              }
+                            },
+                            "type": "object"
+                          },
+                          "group_by": {
+                            "description": "The rules for the group by.",
+                            "items": {
+                              "description": "A group by rule.",
+                              "properties": {
+                                "path": {
+                                  "description": "The path to the value the log-based metric will be aggregated over.",
+                                  "example": "@http.status_code",
+                                  "type": "string"
+                                },
+                                "tag_name": {
+                                  "description": "Eventual name of the tag that gets created. By default, the path attribute is used as the tag name.",
+                                  "example": "status_code",
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "path"
+                              ],
+                              "type": "object"
+                            },
+                            "type": "array"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "type": {
+                        "default": "logs_metrics",
+                        "description": "The type of the resource. The value should always be logs_metrics.",
+                        "enum": [
+                          "logs_metrics"
+                        ],
+                        "example": "logs_metrics",
+                        "type": "string",
+                        "x-enum-varnames": [
+                          "LOGS_METRICS"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "attributes"
+                    ],
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "data"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "description": "New definition of the log-based metric.",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "The log-based metric object.",
+                  "properties": {
+                    "data": {
+                      "description": "The log-based metric properties.",
+                      "properties": {
+                        "attributes": {
+                          "description": "The object describing a Datadog log-based metric.",
+                          "properties": {
+                            "compute": {
+                              "description": "The compute rule to compute the log-based metric.",
+                              "properties": {
+                                "aggregation_type": {
+                                  "description": "The type of aggregation to use.",
+                                  "enum": [
+                                    "count",
+                                    "distribution"
+                                  ],
+                                  "type": "string",
+                                  "x-enum-varnames": [
+                                    "COUNT",
+                                    "DISTRIBUTION"
+                                  ]
+                                },
+                                "include_percentiles": {
+                                  "description": "It indicates whether percentiles should be computed or not for the metric (only used if the aggregation type is a \"distribution\").",
+                                  "type": "boolean"
+                                },
+                                "metric": {
+                                  "description": "The path to the value the log-based metric will aggregate on (only used if the aggregation type is a \"distribution\").",
+                                  "example": "@duration",
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "aggregation_type"
+                              ],
+                              "type": "object"
+                            },
+                            "filter": {
+                              "description": "The log-based metric filter. Logs matching this filter will be aggregated in this metric.",
+                              "properties": {
+                                "query": {
+                                  "default": "*",
+                                  "description": "The search query - following the log search syntax.",
+                                  "example": "service:web* AND @http.status_code:[200 TO 299]",
+                                  "type": "string"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "group_by": {
+                              "description": "The rules for the group by.",
+                              "items": {
+                                "description": "A group by rule.",
+                                "properties": {
+                                  "path": {
+                                    "description": "The path to the value the log-based metric will be aggregated over.",
+                                    "example": "@http.status_code",
+                                    "type": "string"
+                                  },
+                                  "tag_name": {
+                                    "description": "Eventual name of the tag that gets created. By default, the path attribute is used as the tag name.",
+                                    "example": "status_code",
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "path"
+                                ],
+                                "type": "object"
+                              },
+                              "type": "array"
+                            }
+                          },
+                          "required": [
+                            "compute"
+                          ],
+                          "type": "object"
+                        },
+                        "id": {
+                          "description": "The name of the log-based metric.",
+                          "example": "logs.page.load.count",
+                          "type": "string"
+                        },
+                        "type": {
+                          "default": "logs_metrics",
+                          "description": "The type of the resource. The value should always be logs_metrics.",
+                          "enum": [
+                            "logs_metrics"
+                          ],
+                          "example": "logs_metrics",
+                          "type": "string",
+                          "x-enum-varnames": [
+                            "LOGS_METRICS"
+                          ]
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "API error response.",
+                  "properties": {
+                    "errors": {
+                      "description": "A list of errors.",
+                      "items": {
+                        "description": "A list of items.",
+                        "example": "Bad Request",
+                        "type": "string"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "errors"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "API error response.",
+                  "properties": {
+                    "errors": {
+                      "description": "A list of errors.",
+                      "items": {
+                        "description": "A list of items.",
+                        "example": "Bad Request",
+                        "type": "string"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "errors"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Not Authorized"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "API error response.",
+                  "properties": {
+                    "errors": {
+                      "description": "A list of errors.",
+                      "items": {
+                        "description": "A list of items.",
+                        "example": "Bad Request",
+                        "type": "string"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "errors"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "API error response.",
+                  "properties": {
+                    "errors": {
+                      "description": "A list of errors.",
+                      "items": {
+                        "description": "A list of items.",
+                        "example": "Bad Request",
+                        "type": "string"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "errors"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          }
+        },
+        "summary": "Update a log-based metric",
+        "tags": [
+          "Logs Metrics"
+        ],
+        "x-codegen-request-body-name": "body"
       }
     },
     "/api/v2/logs/config/restriction_queries": {
@@ -35689,6 +37743,14 @@
     {
       "description": "[See API version 1](/api/v1/logs-indexes/).",
       "name": "Logs Indexes"
+    },
+    {
+      "description": "Manage configuration of [log-based metrics](https://app.datadoghq.com/logs/pipelines/generate-metrics) for your organization.",
+      "externalDocs": {
+        "description": "Find out more at",
+        "url": "https://docs.datadoghq.com/logs/logs_to_metrics/"
+      },
+      "name": "Logs Metrics"
     },
     {
       "description": "[See API version 1](/api/v1/logs-pipelines/).",
